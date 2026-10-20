@@ -1,0 +1,422 @@
+/* ========= ОБЩИЙ ШРИФТ ========= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --color: #A179DC;
+    --bg: #121218;
+    --bg-card: #1c1c24;
+    --bg-soft: #232330;
+    --bg-soft-hover: #2b2b3a;
+    --text: #e4e4ec;
+    --text-dim: #9a9ab0;
+    --border: #2e2e3e;
+    --border-soft: #262632;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+}
+
+/* ========= ОСНОВНОЙ КОНТЕНТ ========= */
+.main-content {
+    margin-left: 260px;
+    padding: 2rem;
+    max-width: 1200px;
+}
+
+/* ========= КАРТОЧКИ ========= */
+.card {
+    background: var(--bg-card);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border);
+    margin-bottom: 1.5rem;
+}
+
+.card h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color);
+    display: inline-block;
+    color: var(--text);
+}
+
+.card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #d4c6f0;
+}
+
+/* ========= СЕТКИ ========= */
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ========= СПИСКИ ========= */
+.feature-list {
+    list-style: none;
+    margin-top: 1rem;
+}
+
+.feature-list li {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border-soft);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.feature-list li strong {
+    min-width: 100px;
+    color: var(--color);
+    font-weight: 600;
+}
+
+/* ========= БЭЙДЖИ ========= */
+.badge {
+    background: var(--bg-soft);
+    padding: 0.25rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #c9b3ef;
+    display: inline-block;
+    border: 1px solid var(--border);
+}
+
+.badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.feature-tag {
+    background: rgba(161, 121, 220, 0.14);
+    padding: 0.3rem 1rem;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #c9b3ef;
+    display: inline-block;
+    border: 1px solid rgba(161, 121, 220, 0.3);
+}
+
+.feature-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1rem;
+}
+
+/* ========= СТАТИСТИКА ========= */
+.stat-block {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.stat-item {
+    flex: 1;
+    min-width: 100px;
+    background: var(--bg-soft);
+    padding: 0.8rem;
+    text-align: center;
+    border-radius: 0.8rem;
+    border: 1px solid var(--border);
+}
+
+.stat-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--color);
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-top: 0.25rem;
+}
+
+/* ========= ЦИТАТЫ / БЛОКИ КОДА ========= */
+.quote-block {
+    background: var(--bg-soft);
+    padding: 1.2rem;
+    border-radius: 0.8rem;
+    border-left: 4px solid var(--color);
+    margin: 1rem 0;
+    font-style: italic;
+    color: #c8c8d8;
+    overflow-x: auto;
+}
+
+/* ========= ССЫЛКИ ========= */
+.wiki-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--color);
+    color: #ffffff;
+    padding: 0.5rem 1.2rem;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.wiki-link:hover {
+    background: #8a63c4;
+}
+
+/* ========= ЗАГОЛОВОК ========= */
+.page-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+}
+
+.page-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+}
+
+.page-header .subtitle {
+    font-size: 1rem;
+    color: var(--text-dim);
+}
+
+/* ========= КОД ========= */
+code {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    background: var(--bg-soft);
+    color: #d4bfff;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.88em;
+    border: 1px solid var(--border-soft);
+}
+
+/* ========= ПОДВАЛ ========= */
+.footer {
+    text-align: center;
+    padding: 2rem 0 1rem;
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    border-top: 1px solid var(--border);
+    margin-top: 2rem;
+}
+
+/* ========= БОКОВАЯ ПАНЕЛЬ ========= */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 260px;
+    height: 100vh;
+    background: #17171f;
+    color: var(--text);
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.4);
+    border-right: 1px solid var(--border);
+}
+
+.sidebar-header {
+    padding: 1.5rem 1.2rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1rem;
+}
+
+.sidebar-header h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--color);
+    margin-bottom: 0.25rem;
+}
+
+.sidebar-header p {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+}
+
+.sidebar-nav {
+    padding: 0 0.8rem;
+}
+
+.nav-group {
+    margin-bottom: 1.5rem;
+}
+
+.nav-group-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    color: #7a7a92;
+    padding: 0.5rem 1rem;
+    margin-top: 0.5rem;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.6rem 1rem;
+    margin: 2px 0;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #b8b8cc;
+}
+
+.nav-item:hover {
+    background: var(--bg-soft-hover);
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.nav-item.active {
+    background: rgba(161, 121, 220, 0.2);
+    color: #ffffff;
+    box-shadow: inset 3px 0 0 var(--color);
+}
+
+.nav-icon {
+    width: 28px;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.sidebar-nav a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+/* ========= КНОПКА МОБИЛЬНОГО МЕНЮ ========= */
+.mobile-menu-btn {
+    display: none;
+}
+
+/* ========= АДАПТИВНОСТЬ ========= */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 1001;
+        background: var(--bg-card);
+        color: var(--text);
+        padding: 0.5rem 0.8rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        border: 1px solid var(--border);
+    }
+
+    .grid-2, .grid-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .feature-list li {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .feature-list li strong {
+        min-width: auto;
+    }
+}
+
+@media (min-width: 769px) {
+    .mobile-menu-btn {
+        display: none;
+    }
+}
+
+/* ========= СКРОЛЛБАР ========= */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3a3a4e;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #4a4a62;
+}
+/* ========= ПОДСВЕТКА СИНТАКСИСА C# ========= */
+.code-block {
+    background: #14141c;
+    padding: 1.2rem;
+    border-radius: 0.8rem;
+    border-left: 4px solid var(--color);
+    margin: 1rem 0;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    overflow-x: auto;
+    color: #d4d4dc;
+    font-style: normal;
+    white-space: pre;
+}
+
+.code-block .kw   { color: #569cd6; }
+.code-block .type { color: #4ec9b0; }
+.code-block .str  { color: #ce9178; }
+.code-block .num  { color: #b5cea8; }
+.code-block .cmt  { color: #6a9955; font-style: italic; }
+.code-block .fn   { color: #dcdcaa; }
+.code-block .op   { color: #d4d4d4; }
+.code-block .var  { color: #9cdcfe; }

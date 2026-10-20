@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="12.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Консультация 5 — Циклы</title>
+</head>
+<body>
+
+<!-- БОКОВАЯ ПАНЕЛЬ -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <h3>C#</h3>
+        <p>Коротко о главном</p>
+    </div>
+    <div class="sidebar-nav">
+        <div class="nav-group">
+            <div class="nav-group-title">Основное</div>
+            <div class="nav-item">
+                <a href="index.html">
+                    <span class="nav-icon">🏠</span>
+                    <span>Главная</span>
+                </a>
+            </div>
+        </div>
+        <div class="nav-group">
+            <div class="nav-group-title">Консультации</div>
+            <div class="nav-item">
+                <a href="1.html"><span class="nav-icon">1</span><span>Консультация 1</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="2.html"><span class="nav-icon">2</span><span>Консультация 2</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="3.html"><span class="nav-icon">3</span><span>Консультация 3</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="4.html"><span class="nav-icon">4</span><span>Консультация 4</span></a>
+            </div>
+            <div class="nav-item active">
+                <a href="5.html"><span class="nav-icon">5</span><span>Консультация 5</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="6.html"><span class="nav-icon">6</span><span>Консультация 6</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="7.html"><span class="nav-icon">7</span><span>Консультация 7</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="8.html"><span class="nav-icon">8</span><span>Консультация 8</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="9.html"><span class="nav-icon">9</span><span>Консультация 9</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="10.html"><span class="nav-icon">10</span><span>Консультация 10</span></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">
+    ☰ Меню
+</div>
+
+<!-- ОСНОВНОЙ КОНТЕНТ -->
+<div class="main-content">
+
+    <div class="page-header">
+        <h1>Консультация 5. Циклы</h1>
+        <p class="subtitle">for, while, do-while, foreach, break/continue, вложенные циклы и выбор подходящего цикла</p>
+    </div>
+
+    <!-- ЦЕЛИ -->
+    <div class="card">
+        <h2>Цели консультации</h2>
+        <p>К концу занятия слушатель должен:</p>
+        <ul class="feature-list">
+            <li><strong>Понимать</strong><span>зачем нужны циклы и как они меняют поток управления</span></li>
+            <li><strong>Уметь</strong><span>уверенно пользоваться <code>for</code>, <code>while</code>, <code>do-while</code>, <code>foreach</code></span></li>
+            <li><strong>Понимать</strong><span>разницу между циклами с предусловием и постусловием</span></li>
+            <li><strong>Уметь</strong><span>применять <code>break</code> и <code>continue</code> осознанно</span></li>
+            <li><strong>Уметь</strong><span>писать вложенные циклы и выбирать подходящий цикл под задачу</span></li>
+            <li><strong>Видеть</strong><span>типичные ошибки: бесконечный цикл, выход за границы массива, «на единицу»</span></li>
+        </ul>
+    </div>
+
+    <!-- 1. ЗАЧЕМ НУЖНЫ ЦИКЛЫ -->
+    <div class="card">
+        <h2>1. Зачем нужны циклы</h2>
+        <p>Цикл позволяет повторить блок кода несколько раз без дублирования. Вместо:</p>
+        <div class="code-block"><span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="num">1</span>);
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="num">2</span>);
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="num">3</span>);</div>
+        <p style="margin-top:0.75rem;">пишем:</p>
+        <div class="code-block"><span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= <span class="num">3</span>; i++)
+{
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(i);
+}</div>
+
+        <p style="margin-top:0.75rem;"><strong>Любой цикл состоит из трёх элементов:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Инициализация</strong><span>начальное состояние</span></li>
+            <li><strong>Условие</strong><span>продолжения (проверяется перед каждой итерацией)</span></li>
+            <li><strong>Изменение</strong><span>состояния (шаг)</span></li>
+        </ul>
+        <p style="margin-top:0.75rem;">Понимание этих трёх частей — ключ к тому, чтобы не писать бесконечные циклы.</p>
+    </div>
+
+    <!-- 2. ЦИКЛ FOR -->
+    <div class="card">
+        <h2>2. Цикл for</h2>
+        <p>Самый частый цикл, когда известно количество итераций или нужен счётчик:</p>
+        <div class="code-block"><span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">5</span>; i++)
+{
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>($<span class="str">"Итерация {i}"</span>);
+}</div>
+        <p style="margin-top:0.75rem;"><strong>Разбор частей:</strong> <code>int i = 0</code> — инициализация (один раз); <code>i &lt; 5</code> — условие (перед каждой итерацией); <code>i++</code> — шаг (после каждой итерации). Тело выполняется, пока условие <code>true</code>.</p>
+
+        <p style="margin-top:0.75rem;"><strong>Варианты:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Обратный отсчёт</strong><span><code>for (int i = 5; i &gt; 0; i--);</code></span></li>
+            <li><strong>Шаг больше 1</strong><span><code>for (int i = 0; i &lt; 10; i += 2);</code></span></li>
+            <li><strong>Несколько переменных</strong><span><code>for (int i = 0, j = 10; i &lt; j; i++, j--);</code></span></li>
+            <li><strong>Бесконечный</strong><span><code>for (;;) { ... }</code> — с явным <code>break</code> внутри (см. раздел 5)</span></li>
+        </ul>
+
+        <div class="quote-block">
+            <strong>Важно:</strong> переменная <code>i</code> существует только внутри цикла (область видимости — тело цикла). Это защищает от случайного использования счётчика после выхода.
+        </div>
+        <div class="quote-block">
+            <strong>Типичная ловушка — «на единицу»:</strong> <code>i &lt;= arr.Length</code> вместо <code>i &lt; arr.Length</code> даёт выход за границы. Проговорить на конкретном примере.
+        </div>
+    </div>
+
+    <!-- 3. WHILE -->
+    <div class="card">
+        <h2>3. Цикл while (с предусловием)</h2>
+        <p>Используется, когда количество итераций заранее неизвестно, но есть условие продолжения:</p>
+        <div class="code-block"><span class="kw">int</span> n = <span class="num">1</span>;
+<span class="kw">while</span> (n &lt;= <span class="num">5</span>)
+{
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(n);
+    n++;
+}</div>
+
+        <p style="margin-top:0.75rem;"><strong>Особенности:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Условие</strong><span>проверяется до тела — если оно сразу <code>false</code>, тело не выполнится ни разу</span></li>
+            <li><strong>Инициализация</strong><span>до цикла, изменение — внутри тела (легко забыть → бесконечный цикл)</span></li>
+            <li><strong>Ввод</strong><span>удобен для чтения ввода до корректного значения</span></li>
+        </ul>
+
+        <div class="code-block" style="margin-top:1rem;"><span class="kw">int</span> age;
+<span class="kw">while</span> (<span class="kw">true</span>)
+{
+    <span class="type">Console</span>.<span class="fn">Write</span>(<span class="str">"Введите возраст: "</span>);
+    <span class="kw">if</span> (<span class="kw">int</span>.<span class="fn">TryParse</span>(<span class="type">Console</span>.<span class="fn">ReadLine</span>(), <span class="kw">out</span> age) &amp;&amp; age &gt; <span class="num">0</span>)
+        <span class="kw">break</span>;
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Некорректно, попробуйте ещё раз"</span>);
+}</div>
+        <p style="margin-top:0.75rem;">Этот паттерн «цикл + break по успеху» стоит показать — он очень практичен.</p>
+    </div>
+
+    <!-- 4. DO-WHILE -->
+    <div class="card">
+        <h2>4. Цикл do-while (с постусловием)</h2>
+        <p>Тело выполняется хотя бы один раз, условие проверяется после тела:</p>
+        <div class="code-block"><span class="kw">int</span> n;
+<span class="kw">do</span>
+{
+    <span class="type">Console</span>.<span class="fn">Write</span>(<span class="str">"Введите положительное число: "</span>);
+} <span class="kw">while</span> (!<span class="kw">int</span>.<span class="fn">TryParse</span>(<span class="type">Console</span>.<span class="fn">ReadLine</span>(), <span class="kw">out</span> n) || n &lt;= <span class="num">0</span>);</div>
+
+        <p style="margin-top:0.75rem;"><strong>Когда уместен:</strong> когда действие нужно выполнить минимум один раз (запрос ввода, повтор меню, «сыграть ещё раз?»).</p>
+
+        <p style="margin-top:0.75rem;"><strong>Сравнение с while — обязательный пункт занятия:</strong></p>
+        <ul class="feature-list">
+            <li><strong>while</strong><span>«пока условие истинно, делай» (может не выполниться)</span></li>
+            <li><strong>do-while</strong><span>«делай, пока условие истинно» (выполнится минимум раз)</span></li>
+        </ul>
+    </div>
+
+    <!-- 5. BREAK И CONTINUE -->
+    <div class="card">
+        <h2>5. break и continue</h2>
+        <p><code>break</code> — немедленный выход из ближайшего цикла (или <code>switch</code>):</p>
+        <div class="code-block"><span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">100</span>; i++)
+{
+    <span class="kw">if</span> (i == <span class="num">5</span>) <span class="kw">break</span>;       <span class="cmt">// выходим из цикла при i == 5</span>
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(i);
+}</div>
+
+        <p style="margin-top:0.75rem;"><code>continue</code> — пропуск остатка текущей итерации и переход к следующей:</p>
+        <div class="code-block"><span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">10</span>; i++)
+{
+    <span class="kw">if</span> (i % <span class="num">2</span> == <span class="num">0</span>) <span class="kw">continue</span>; <span class="cmt">// пропускаем чётные</span>
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(i);
+}</div>
+
+        <p style="margin-top:0.75rem;"><strong>Правила хорошего тона:</strong></p>
+        <ul class="feature-list">
+            <li><strong>break/continue</strong><span>не «запрещённый приём», но злоупотребление ими ухудшает читаемость</span></li>
+            <li><strong>if вместо continue</strong><span>если <code>continue</code> можно заменить обычным <code>if</code> без потери ясности — лучше <code>if</code></span></li>
+            <li><strong>Вложенность</strong><span><code>break</code> внутри вложенных циклов выходит только из внутреннего — важный момент (см. раздел 6)</span></li>
+        </ul>
+    </div>
+
+    <!-- 6. ВЛОЖЕННЫЕ ЦИКЛЫ -->
+    <div class="card">
+        <h2>6. Вложенные циклы</h2>
+        <p>Цикл внутри цикла. Внешний отвечает за «строки», внутренний — за «столбцы»:</p>
+        <div class="code-block"><span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= <span class="num">3</span>; i++)
+{
+    <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">1</span>; j &lt;= <span class="num">3</span>; j++)
+    {
+        <span class="type">Console</span>.<span class="fn">Write</span>($<span class="str">"{i * j,4}"</span>);
+    }
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>();
+}</div>
+
+        <p style="margin-top:0.75rem;"><strong>Ключевые моменты:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Полный проход</strong><span>внутренний цикл выполняется полностью на каждой итерации внешнего</span></li>
+            <li><strong>Итерации</strong><span>общее число итераций внутреннего тела = произведение количеств итераций (3 × 3 = 9)</span></li>
+            <li><strong>break</strong><span>во внутреннем цикле выходит только из него, внешний продолжается. Если нужен выход из обоих — используют флаг, <code>goto</code> (не рекомендуем) или вынесение в метод с <code>return</code></span></li>
+        </ul>
+
+        <p style="margin-top:0.75rem;"><strong>Пример с флагом:</strong></p>
+        <div class="code-block"><span class="kw">bool</span> found = <span class="kw">false</span>;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n &amp;&amp; !found; i++)
+{
+    <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">0</span>; j &lt; m; j++)
+    {
+        <span class="kw">if</span> (matrix[i, j] == target)
+        {
+            found = <span class="kw">true</span>;
+            <span class="kw">break</span>; <span class="cmt">// выходим из внутреннего</span>
+        }
+    }
+}</div>
+    </div>
+
+    <!-- 7. FOREACH -->
+    <div class="card">
+        <h2>7. Цикл foreach</h2>
+        <p>Специальный цикл для перебора элементов коллекции (массива, списка, строки):</p>
+        <div class="code-block"><span class="kw">int</span>[] numbers = { <span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span> };
+<span class="kw">foreach</span> (<span class="kw">int</span> n <span class="kw">in</span> numbers)
+{
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(n);
+}</div>
+
+        <p style="margin-top:0.75rem;"><strong>Особенности:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Индексы</strong><span>не нужно думать об индексах и границах — идеален, когда нужны все элементы по порядку</span></li>
+            <li><strong>Копия</strong><span>переменная цикла — копия элемента; менять её бессмысленно (<code>n = 0</code> не изменит массив)</span></li>
+            <li><strong>Изменение коллекции</strong><span>нельзя изменить коллекцию во время перебора (добавить/удалить элемент) — будет исключение</span></li>
+            <li><strong>Индекс</strong><span>если нужен индекс или нужно пропускать элементы — берите <code>for</code></span></li>
+        </ul>
+
+        <p style="margin-top:0.75rem;"><strong>Сравнение for и foreach — обязательный пункт:</strong></p>
+        <ul class="feature-list">
+            <li><strong>for</strong><span>когда нужен индекс, обратный порядок, шаг, изменение элементов по индексу</span></li>
+            <li><strong>foreach</strong><span>когда нужен просто перебор «всех по порядку», читается короче и безопаснее</span></li>
+        </ul>
+    </div>
+
+    <!-- 8. КАК ВЫБРАТЬ ЦИКЛ -->
+    <div class="card">
+        <h2>8. Как выбрать цикл</h2>
+        <p>Короткое правило для слушателей:</p>
+        <ul class="feature-list">
+            <li><strong>for</strong><span>известно число итераций / нужен счётчик</span></li>
+            <li><strong>while</strong><span>неизвестно, но есть условие</span></li>
+            <li><strong>do-while</strong><span>нужно выполнить минимум один раз</span></li>
+            <li><strong>foreach</strong><span>перебрать коллекцию целиком</span></li>
+        </ul>
+        <div class="quote-block">
+            Часто один и тот же алгоритм можно записать разными циклами — цель занятия: понимать, что выбираем, и уметь переписать один в другой (полезное упражнение).
+        </div>
+    </div>
+
+    <!-- 9. ПРАКТИЧЕСКИЕ ЗАДАНИЯ -->
+    <div class="card">
+        <h2>9. Практические задания</h2>
+        <div class="grid-2">
+            <div>
+                <ul class="feature-list">
+                    <li><strong>1</strong><span>Вывести числа от 1 до 10 через <code>for</code>, затем от 10 до 1, затем только чётные.</span></li>
+                    <li><strong>2</strong><span>Посчитать сумму чисел от 1 до N (N вводит пользователь) — через <code>for</code> и через <code>while</code>, сравнить.</span></li>
+                    <li><strong>3</strong><span>Таблица умножения 1–9 через вложенные циклы с выравниванием (<code>{x,4}</code>).</span></li>
+                    <li><strong>4</strong><span>Запрашивать у пользователя числа, пока не введён 0; посчитать сумму и количество (цикл + <code>break</code>).</span></li>
+                </ul>
+            </div>
+            <div>
+                <ul class="feature-list">
+                    <li><strong>5</strong><span>«Угадай число»: программа загадывает число, пользователь вводит, программа подсказывает «больше/меньше», пока не угадано; посчитать число попыток (<code>do-while</code> или <code>while (true)</code>).</span></li>
+                    <li><strong>6</strong><span>Найти первое число от 1 до 100, которое делится на 7 и на 9 одновременно (<code>for</code> + <code>break</code>).</span></li>
+                    <li><strong>7</strong><span>Перебрать массив строк через <code>foreach</code> и вывести только те, что длиннее 3 символов (<code>continue</code> или <code>if</code>).</span></li>
+                    <li><strong>8</strong><span>Вывести «ёлочку» из <code>*</code> высотой N через вложенные циклы.</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10. ТИПИЧНЫЕ ОШИБКИ -->
+    <div class="card">
+        <h2>10. Типичные ошибки и вопросы новичков</h2>
+        <ul class="feature-list">
+            <li><strong>Бесконечный цикл</strong><span>забыли изменить счётчик (<code>i++</code>), неверное условие, <code>while (true)</code> без <code>break</code>.</span></li>
+            <li><strong>«На единицу»</strong><span><code>i &lt;= arr.Length</code> → выход за границы; <code>i &lt; arr.Length</code> — правильно.</span></li>
+            <li><strong>Изменение коллекции</strong><span>в <code>foreach</code> — исключение <code>InvalidOperationException</code>.</span></li>
+            <li><strong>Изменение через foreach</strong><span>попытка изменить элемент через переменную <code>foreach</code> — не влияет на коллекцию.</span></li>
+            <li><strong>break во вложенном</strong><span>выходит только из внутреннего; новички ждут выхода из обоих.</span></li>
+            <li><strong>continue в do-while</strong><span>не пропускает проверку условия (в отличие от <code>while</code>); редкий, но коварный случай.</span></li>
+            <li><strong>while и do-while</strong><span>путаница — «а если условие сразу ложно?».</span></li>
+            <li><strong>Счётчик вне цикла</strong><span>но используется после — область видимости и неинициализированные переменные.</span></li>
+            <li><strong>for с double</strong><span><code>for (double d = 0; d != 1; d += 0.1)</code> может не завершиться; для счётчиков — целые.</span></li>
+            <li><strong>Глубокая вложенность</strong><span>3+ уровня циклов плохо читаются, стоит выносить во вспомогательные методы.</span></li>
+        </ul>
+    </div>
+
+    <!-- 11. ИТОГИ -->
+    <div class="card">
+        <h2>11. Итоги и что дальше</h2>
+        <p><strong>Вывод:</strong> освоили четыре вида циклов, научились выбирать подходящий, применять <code>break</code>/<code>continue</code>, писать вложенные циклы и перебирать коллекции через <code>foreach</code>. Главные навыки — не допускать бесконечных циклов и «на единицу».</p>
+-
+        <div class="quote-block">
+            <strong>Следующая консультация</strong> — массивы и базовые коллекции (<code>List&lt;T&gt;</code>, <code>Dictionary&lt;TKey,TValue&gt;</code>).
+        </div>
+    </div>
+
+    <div class="footer">
+        Консультация 5 — Циклы
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

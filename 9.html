@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="12.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Консультация 9 — Основы ООП</title>
+</head>
+<body>
+
+<!-- БОКОВАЯ ПАНЕЛЬ -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <h3>C#</h3>
+        <p>Коротко о главном</p>
+    </div>
+    <div class="sidebar-nav">
+        <div class="nav-group">
+            <div class="nav-group-title">Основное</div>
+            <div class="nav-item">
+                <a href="index.html">
+                    <span class="nav-icon">🏠</span>
+                    <span>Главная</span>
+                </a>
+            </div>
+        </div>
+        <div class="nav-group">
+            <div class="nav-group-title">Консультации</div>
+            <div class="nav-item">
+                <a href="1.html"><span class="nav-icon">1</span><span>Консультация 1</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="2.html"><span class="nav-icon">2</span><span>Консультация 2</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="3.html"><span class="nav-icon">3</span><span>Консультация 3</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="4.html"><span class="nav-icon">4</span><span>Консультация 4</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="5.html"><span class="nav-icon">5</span><span>Консультация 5</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="6.html"><span class="nav-icon">6</span><span>Консультация 6</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="7.html"><span class="nav-icon">7</span><span>Консультация 7</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="8.html"><span class="nav-icon">8</span><span>Консультация 8</span></a>
+            </div>
+            <div class="nav-item active">
+                <a href="9.html"><span class="nav-icon">9</span><span>Консультация 9</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="10.html"><span class="nav-icon">10</span><span>Консультация 10</span></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">
+    ☰ Меню
+</div>
+
+<!-- ОСНОВНОЙ КОНТЕНТ -->
+<div class="main-content">
+
+    <div class="page-header">
+        <h1>Консультация 9. Основы ООП: классы, объекты, поля, свойства, методы</h1>
+        <p class="subtitle">Классы и объекты, поля, свойства, конструкторы, инкапсуляция, this и static</p>
+    </div>
+
+    <!-- ЦЕЛИ -->
+    <div class="card">
+        <h2>Цели консультации</h2>
+        <p>К концу занятия слушатель должен:</p>
+        <ul class="feature-list">
+            <li><strong>Понимать</strong><span>зачем нужно ООП и что такое «модель предметной области»</span></li>
+            <li><strong>Уметь</strong><span>объявлять класс и создавать объекты (<code>new</code>), понимать разницу между классом и экземпляром</span></li>
+            <li><strong>Знать</strong><span>поля, свойства, методы и конструкторы, уметь их писать</span></li>
+            <li><strong>Понимать</strong><span>модификаторы доступа (<code>public</code>/<code>private</code>) и принцип инкапсуляции</span></li>
+            <li><strong>Понимать</strong><span><code>this</code>, <code>static</code> и разницу между статическими и экземплярными членами</span></li>
+            <li><strong>Уметь</strong><span>проектировать простой класс с валидацией в свойствах</span></li>
+        </ul>
+    </div>
+
+    <!-- 1. ЗАЧЕМ НУЖНО ООП -->
+    <div class="card">
+        <h2>1. Зачем нужно ООП</h2>
+        <p>До этого мы писали «процедурно»: данные отдельно, методы отдельно. Проблемы:</p>
+        <ul class="feature-list">
+            <li><strong>Разбросанность</strong><span>данные и операции над ними разбросаны</span></li>
+            <li><strong>Целостность</strong><span>легко нарушить целостность (кто угодно поменяет поле на недопустимое значение)</span></li>
+            <li><strong>Расширение</strong><span>трудно переиспользовать и расширять</span></li>
+        </ul>
+
+        <p style="margin-top:0.75rem;">ООП позволяет объединить данные и поведение в одном типе — классе, и описать предметную область «как в жизни»: <code>User</code>, <code>Order</code>, <code>Product</code>, <code>Account</code>. Это делает код ближе к задаче и устойчивее к изменениям.</p>
+
+        <div class="quote-block">
+            На занятии — только основы: классы, объекты, поля, свойства, методы, конструкторы, инкапсуляция, <code>static</code>. Наследование, полиморфизм, интерфейсы — на следующей консультации.
+        </div>
+    </div>
+
+    <!-- 2. КЛАСС И ОБЪЕКТ -->
+    <div class="card">
+        <h2>2. Класс и объект</h2>
+        <p><strong>Класс</strong> — это шаблон (чертёж, тип). <strong>Объект</strong> (экземпляр) — конкретная «вещь», созданная по этому шаблону.</p>
+
+        <div class="code-block"><span class="kw">class</span> <span class="type">User</span>
+{
+    <span class="kw">public</span> <span class="kw">string</span> Name;
+    <span class="kw">public</span> <span class="kw">int</span> Age;
+}
+
+<span class="cmt">// создание объекта</span>
+<span class="kw">var</span> user = <span class="kw">new</span> <span class="type">User</span>();
+user.Name = <span class="str">"Анна"</span>;
+user.Age = <span class="num">25</span>;
+
+<span class="type">Console</span>.<span class="fn">WriteLine</span>($<span class="str">"{user.Name}, {user.Age}"</span>);</div>
+
+        <p style="margin-top:0.75rem;"><strong>Ключевые моменты:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Один и много</strong><span>класс объявляется один раз, объектов может быть много</span></li>
+            <li><strong>Свои значения</strong><span>каждый объект хранит свои значения полей</span></li>
+            <li><strong>new</strong><span>выделяет память в куче и возвращает ссылку на объект</span></li>
+            <li><strong>Ссылка</strong><span>переменная класса — ссылочная (тема 2): <code>var u2 = user;</code> копирует ссылку, а не объект</span></li>
+        </ul>
+
+        <div class="quote-block">
+            Стоит сразу показать: <code>u2.Age = 30;</code> изменит и <code>user.Age</code> — тот же объект. Это прямая связь с темой 2 и частый источник ошибок.
+        </div>
+    </div>
+
+    <!-- 3. ПОЛЯ -->
+    <div class="card">
+        <h2>3. Поля</h2>
+        <p><strong>Поле</strong> — переменная, принадлежащая объекту (или классу, если <code>static</code>). Хранит состояние.</p>
+
+        <div class="code-block"><span class="kw">class</span> <span class="type">User</span>
+{
+    <span class="kw">public</span> <span class="kw">string</span> Name;   <span class="cmt">// поле</span>
+    <span class="kw">public</span> <span class="kw">int</span> Age;       <span class="cmt">// поле</span>
+}</div>
+
+        <p style="margin-top:0.75rem;"><strong>Особенности:</strong></p>
+        <ul class="feature-list">
+            <li><strong>По умолчанию</strong><span>поля класса получают значения по умолчанию (<code>null</code>, <code>0</code>, <code>false</code>) — в отличие от локальных переменных (тема 2)</span></li>
+            <li><strong>private</strong><span>обычно поля делают <code>private</code>, а доступ дают через свойства (раздел 5)</span></li>
+            <li><strong>Публичные поля</strong><span>плохая практика в большинстве случаев: нельзя проверить значение, нельзя поменять реализацию, не сломав код снаружи</span></li>
+        </ul>
+
+        <div class="quote-block">
+            <strong>Именование:</strong> приватные поля — <code>_name</code> или <code>name</code> (camelCase), публичные — <code>Name</code> (PascalCase). На занятии выбрать один стиль и держаться его.
+        </div>
+    </div>
+
+    <!-- 4. МЕТОДЫ -->
+    <div class="card">
+        <h2>4. Методы</h2>
+        <p>Метод — поведение объекта. Всё из темы 7 работает и здесь, плюс:</p>
+        <ul class="feature-list">
+            <li><strong>Доступ</strong><span>методы имеют доступ к полям и свойствам своего объекта</span></li>
+            <li><strong>Видимость</strong><span>могут быть <code>public</code> (для внешнего мира) или <code>private</code> (внутренние помощники)</span></li>
+        </ul>
+
+        <div class="code-block" style="margin-top:1rem;"><span class="kw">class</span> <span class="type">User</span>
+{
+    <span class="kw">private</span> <span class="kw">string</span> _name;
+    <span class="kw">private</span> <span class="kw">int</span> _age;
+
+    <span class="kw">public</span> <span class="kw">void</span> <span class="fn">SetName</span>(<span class="kw">string</span> name)
+    {
+        <span class="kw">if</span> (<span class="kw">string</span>.<span class="fn">IsNullOrWhiteSpace</span>(name))
+            <span class="kw">throw</span> <span class="kw">new</span> <span class="type">ArgumentException</span>(<span class="str">"Имя не может быть пустым"</span>);
+        _name = name;
+    }
+
+    <span class="kw">public</span> <span class="kw">string</span> <span class="fn">GetInfo</span>()
+    {
+        <span class="kw">return</span> $<span class="str">"{_name}, {_age} лет"</span>;
+    }
+}</div>
+
+        <div class="quote-block">
+            Стиль «Get/Set-методы» — это то, что в C# чаще делают через свойства (раздел 5). Показать оба подхода и объяснить, что свойства — более идиоматичны для C#.
+        </div>
+    </div>
+
+    <!-- 5. СВОЙСТВА -->
+    <div class="card">
+        <h2>5. Свойства</h2>
+        <p><strong>Свойство</strong> — «умное» поле: снаружи выглядит как поле, внутри — методы <code>get</code> и <code>set</code>. Основной способ дать контролируемый доступ к данным.</p>
+
+        <h3>Автосвойство (когда проверок не нужно)</h3>
+        <div class="code-block"><span class="kw">class</span> <span class="type">Product</span>
+{
+    <span class="kw">public</span> <span class="kw">string</span> Title { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public</span> <span class="kw">decimal</span> Price { <span class="kw">get</span>; <span class="kw">set</span>; }
+}</div>
+
+        <h3 style="margin-top:1.25rem;">Свойство с логикой (валидация, вычисление)</h3>
+        <div class="code-block"><span class="kw">class</span> <span class="type">User</span>
+{
+    <span class="kw">private</span> <span class="kw">string</span> _name;
+
+    <span class="kw">public</span> <span class="kw">string</span> Name
+    {
+        <span class="kw">get</span> =&gt; _name;
+        <span class="kw">set</span>
+        {
+            <span class="kw">if</span> (<span class="kw">string</span>.<span class="fn">IsNullOrWhiteSpace</span>(value))
+                <span class="kw">throw</span> <span class="kw">new</span> <span class="type">ArgumentException</span>(<span class="str">"Имя не может быть пустым"</span>);
+            _name = value;
+        }
+    }
+}</div>
+
+        <h3 style="margin-top:1.25rem;">Только для чтения (значение задаётся в конструкторе или вычисляется)</h3>
+        <div class="code-block"><span class="kw">public</span> <span class="kw">string</span> FullName { <span class="kw">get</span>; }                     <span class="cmt">// set только в конструкторе</span>
+<span class="kw">public</span> <span class="kw">int</span> Age { <span class="kw">get</span>; <span class="kw">private</span> <span class="kw">set</span>; }                <span class="cmt">// set только внутри класса</span>
+<span class="kw">public</span> <span class="kw">bool</span> IsAdult =&gt; Age &gt;= <span class="num">18</span>;                   <span class="cmt">// вычисляемое свойство</span></div>
+
+        <p style="margin-top:0.75rem;"><strong>Ключевые идеи:</strong></p>
+        <ul class="feature-list">
+            <li><strong>value</strong><span>неявный параметр сеттера</span></li>
+            <li><strong>Валидация</strong><span>свойства позволяют валидировать данные при записи — главный аргумент против публичных полей</span></li>
+            <li><strong>Вычисляемые</strong><span>свойства (<code>=&gt;</code>) не хранят данные, а считают на лету</span></li>
+            <li><strong>init</strong><span>(C# 9+) — «установить только при создании»; упомянуть, не углубляться</span></li>
+        </ul>
+
+        <div class="quote-block">
+            <strong>Практическое правило для слушателей:</strong> по умолчанию — автосвойство <code>{ get; set; }</code>; если нужна проверка или ограничение доступа — пишем логику.
+        </div>
+    </div>
+
+    <!-- 6. КОНСТРУКТОРЫ -->
+    <div class="card">
+        <h2>6. Конструкторы</h2>
+        <p><strong>Конструктор</strong> — специальный метод, вызываемый при <code>new</code>. Задаёт начальное состояние объекта и гарантирует, что объект создаётся «валидным».</p>
+
+        <div class="code-block"><span class="kw">class</span> <span class="type">User</span>
+{
+    <span class="kw">public</span> <span class="kw">string</span> Name { <span class="kw">get</span>; }
+    <span class="kw">public</span> <span class="kw">int</span> Age { <span class="kw">get</span>; }
+
+    <span class="kw">public</span> <span class="fn">User</span>(<span class="kw">string</span> name, <span class="kw">int</span> age)
+    {
+        <span class="kw">if</span> (<span class="kw">string</span>.<span class="fn">IsNullOrWhiteSpace</span>(name))
+            <span class="kw">throw</span> <span class="kw">new</span> <span class="type">ArgumentException</span>(<span class="str">"Имя не может быть пустым"</span>);
+        <span class="kw">if</span> (age &lt; <span class="num">0</span>)
+            <span class="kw">throw</span> <span class="kw">new</span> <span class="type">ArgumentOutOfRangeException</span>(<span class="kw">nameof</span>(age));
+
+        Name = name;
+        Age = age;
+    }
+}
+
+<span class="kw">var</span> u = <span class="kw">new</span> <span class="type">User</span>(<span class="str">"Анна"</span>, <span class="num">25</span>);
+<span class="cmt">// var bad = new User("", -5); // исключение — объект не создастся</span></div>
+
+        <p style="margin-top:0.75rem;"><strong>Особенности:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Имя</strong><span>имя конструктора = имя класса, без возвращаемого типа</span></li>
+            <li><strong>Перегрузка</strong><span>можно иметь несколько конструкторов (перегрузка, тема 7)</span></li>
+            <li><strong>Делегирование</strong><span><code>: this(...)</code> — вызов другого конструктора того же класса</span></li>
+            <li><strong>По умолчанию</strong><span>если конструкторов нет — компилятор создаёт конструктор по умолчанию без параметров</span></li>
+            <li><strong>С параметрами</strong><span>если объявлен хотя бы один конструктор с параметрами — конструктор по умолчанию не создаётся автоматически</span></li>
+            <li><strong>static-конструктор</strong><span>для инициализации статических данных (упомянуть)</span></li>
+        </ul>
+
+        <div class="quote-block">
+            <strong>Практика:</strong> конструктор с обязательными параметрами + свойства только для чтения — надёжный способ гарантировать валидность объекта.
+        </div>
+    </div>
+
+    <!-- 7. МОДИФИКАТОРЫ ДОСТУПА -->
+    <div class="card">
+        <h2>7. Модификаторы доступа и инкапсуляция</h2>
+        <p><strong>Инкапсуляция</strong> — скрытие внутреннего устройства и предоставление контролируемого доступа. Реализуется модификаторами:</p>
+        <ul class="feature-list">
+            <li><strong>public</strong><span>доступно отовсюду</span></li>
+            <li><strong>private</strong><span>только внутри класса (по умолчанию для членов класса)</span></li>
+            <li><strong>internal</strong><span>внутри сборки (проекта)</span></li>
+            <li><strong>protected</strong><span>внутри класса и наследников (тема 10)</span></li>
+        </ul>
+
+        <p style="margin-top:0.75rem;"><strong>Практическая схема «по умолчанию»:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Поля</strong><span><code>private</code></span></li>
+            <li><strong>Свойства и методы</strong><span>нужные снаружи — <code>public</code></span></li>
+            <li><strong>Вспомогательные</strong><span>методы — <code>private</code></span></li>
+            <li><strong>Класс</strong><span><code>public</code> (если нужен другим)</span></li>
+        </ul>
+
+        <div class="code-block" style="margin-top:1rem;"><span class="kw">class</span> <span class="type">BankAccount</span>
+{
+    <span class="kw">private</span> <span class="kw">decimal</span> _balance;           <span class="cmt">// скрыто</span>
+
+    <span class="kw">public</span> <span class="kw">decimal</span> Balance =&gt; _balance; <span class="cmt">// только чтение снаружи</span>
+
+    <span class="kw">public</span> <span class="kw">void</span> <span class="fn">Deposit</span>(<span class="kw">decimal</span> amount)
+    {
+        <span class="kw">if</span> (amount &lt;= <span class="num">0</span>) <span class="kw">throw</span> <span class="kw">new</span> <span class="type">ArgumentOutOfRangeException</span>(<span class="kw">nameof</span>(amount));
+        _balance += amount;
+    }
+
+    <span class="kw">public</span> <span class="kw">bool</span> <span class="fn">TryWithdraw</span>(<span class="kw">decimal</span> amount)
+    {
+        <span class="kw">if</span> (amount &lt;= <span class="num">0</span> || amount &gt; _balance) <span class="kw">return</span> <span class="kw">false</span>;
+        _balance -= amount;
+        <span class="kw">return</span> <span class="kw">true</span>;
+    }
+}</div>
+
+        <div class="quote-block">
+            Снаружи нельзя «сломать» баланс напрямую — только через методы с проверками. Это и есть инкапсуляция. Хороший пример для обсуждения на занятии.
+        </div>
+    </div>
+
+    <!-- 8. THIS -->
+    <div class="card">
+        <h2>8. this</h2>
+        <p><code>this</code> — ссылка на текущий объект. Нужен, когда:</p>
+        <ul class="feature-list">
+            <li><strong>Совпадение имён</strong><span>имя параметра совпадает с именем поля/свойства: <code>this.Name = name;</code></span></li>
+            <li><strong>Передача</strong><span>передать текущий объект в другой метод</span></li>
+            <li><strong>Делегирование</strong><span>вызвать другой конструктор: <code>: this(...)</code></span></li>
+        </ul>
+        <p style="margin-top:0.75rem;">В большинстве случаев <code>this</code> необязателен, но при совпадении имён — обязателен или полезен для ясности. Главное — не путать: <code>this</code> доступен только в экземплярных членах (не в <code>static</code>).</p>
+    </div>
+
+    <!-- 9. STATIC -->
+    <div class="card">
+        <h2>9. static — статические члены</h2>
+        <p><code>static</code> — член принадлежит классу, а не объекту. Один на всех.</p>
+
+        <div class="code-block"><span class="kw">class</span> <span class="type">Counter</span>
+{
+    <span class="kw">public</span> <span class="kw">static</span> <span class="kw">int</span> Total;          <span class="cmt">// общее для всех</span>
+    <span class="kw">public</span> <span class="kw">int</span> Id { <span class="kw">get</span>; }
+
+    <span class="kw">public</span> <span class="fn">Counter</span>()
+    {
+        Total++;
+        Id = Total;
+    }
+}
+
+<span class="kw">var</span> a = <span class="kw">new</span> <span class="type">Counter</span>(); <span class="cmt">// Total = 1, a.Id = 1</span>
+<span class="kw">var</span> b = <span class="kw">new</span> <span class="type">Counter</span>(); <span class="cmt">// Total = 2, b.Id = 2</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="type">Counter</span>.Total); <span class="cmt">// 2 — обращение через класс</span></div>
+
+        <p style="margin-top:0.75rem;"><strong>Что важно:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Через класс</strong><span>статические поля/методы вызываются через имя класса, а не через объект: <code>Counter.Total</code>, <code>Math.Max(...)</code>, <code>Console.WriteLine(...)</code> — всё это <code>static</code></span></li>
+            <li><strong>Нет this</strong><span>в <code>static</code>-методе нет <code>this</code> и нельзя обращаться к экземплярным членам</span></li>
+            <li><strong>Утилиты</strong><span>статические методы — для «утилит», не зависящих от состояния объекта</span></li>
+            <li><strong>Глобальное состояние</strong><span>статическое состояние — глобальное, требует осторожности (тесты, многопоточность); на базовом уровне — знать, не злоупотреблять</span></li>
+        </ul>
+
+        <div class="quote-block">
+            Связать с темой 7: все методы, которые мы писали в <code>Program</code>, были <code>static</code> именно поэтому — мы не создавали объект <code>Program</code>.
+        </div>
+    </div>
+
+    <!-- 10. КЛАСС VS ОБЪЕКТ -->
+    <div class="card">
+        <h2>10. Класс vs объект: сводка</h2>
+        <ul class="feature-list">
+            <li><strong>Класс</strong><span>шаблон, тип — <code>User</code></span></li>
+            <li><strong>Объект</strong><span>экземпляр класса — <code>new User(...)</code></span></li>
+            <li><strong>Поле</strong><span>данные объекта — <code>_name</code></span></li>
+            <li><strong>Свойство</strong><span>контролируемый доступ к данным — <code>Name { get; set; }</code></span></li>
+            <li><strong>Метод</strong><span>поведение объекта — <code>GetInfo()</code></span></li>
+            <li><strong>Конструктор</strong><span>инициализация при создании — <code>User(string, int)</code></span></li>
+            <li><strong>static</strong><span>принадлежит классу, один на всех — <code>Counter.Total</code></span></li>
+        </ul>
+
+        <div class="quote-block">
+            Эту таблицу стоит вывести на доске — она помогает уложить тему.
+        </div>
+    </div>
+
+    <!-- 11. ПРАКТИЧЕСКИЕ ЗАДАНИЯ -->
+    <div class="card">
+        <h2>11. Практические задания</h2>
+        <div class="grid-2">
+            <div>
+                <ul class="feature-list">
+                    <li><strong>1</strong><span>Класс <code>Book</code> с полями/свойствами <code>Title</code>, <code>Author</code>, <code>Year</code> и методом <code>GetInfo()</code>; создать 2–3 объекта и вывести.</span></li>
+                    <li><strong>2</strong><span>Класс <code>Rectangle</code> с приватными полями ширины/высоты, свойствами с валидацией (&gt; 0) и вычисляемыми <code>Area</code>, <code>Perimeter</code>.</span></li>
+                    <li><strong>3</strong><span>Класс <code>BankAccount</code> из раздела 7: реализовать <code>Deposit</code>, <code>TryWithdraw</code>, <code>Balance</code> (только чтение); попробовать «сломать» баланс снаружи и убедиться, что нельзя.</span></li>
+                    <li><strong>4</strong><span>Класс <code>User</code> с конструктором, валидирующим имя и возраст; свойства только для чтения; создать объект с некорректными данными и увидеть исключение.</span></li>
+                </ul>
+            </div>
+            <div>
+                <ul class="feature-list">
+                    <li><strong>5</strong><span>Класс <code>Counter</code> со <code>static</code>-полем <code>Total</code> и экземплярным <code>Id</code>; создать несколько объектов и вывести <code>Counter.Total</code>.</span></li>
+                    <li><strong>6</strong><span>Класс <code>Product</code> с <code>Price</code> и свойством <code>PriceWithDiscount</code>, вычисляющим цену со скидкой 10%; показать разницу между хранимым и вычисляемым свойством.</span></li>
+                    <li><strong>7</strong><span>Добавить в <code>Book</code> перегрузку конструкторов: <code>Book(title)</code> и <code>Book(title, author, year)</code> с делегированием через <code>: this(...)</code>.</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 12. ТИПИЧНЫЕ ОШИБКИ -->
+    <div class="card">
+        <h2>12. Типичные ошибки и вопросы новичков</h2>
+        <ul class="feature-list">
+            <li><strong>Класс и объект</strong><span>путаница — «класс — это чертёж, объект — дом».</span></li>
+            <li><strong>Копирование через =</strong><span>копируется ссылка, а не объект (тема 2).</span></li>
+            <li><strong>Публичные поля</strong><span>нет валидации, нельзя изменить реализацию; использовать свойства.</span></li>
+            <li><strong>Забыли new</strong><span><code>User u;</code> без <code>new</code> даёт <code>null</code>; обращение к членам → <code>NullReferenceException</code>.</span></li>
+            <li><strong>Свойство только для чтения</strong><span>но пытаются присвоить снаружи — ошибка компиляции; <code>set</code> только в конструкторе.</span></li>
+            <li><strong>this в static</strong><span>в <code>static</code>-методе — ошибка компиляции.</span></li>
+            <li><strong>static через объект</strong><span>обращение к <code>static</code> через объект — формально можно, но вводит в заблуждение; правильно через класс.</span></li>
+            <li><strong>Валидация в сеттере</strong><span>бросает исключение — иногда это неудобно; обсудить, что проверка может быть и в конструкторе/методе.</span></li>
+            <li><strong>Забыли инициализировать</strong><span>свойства — объект «полупустой»; конструктор должен гарантировать валидность.</span></li>
+            <li><strong>Смешение ответственности</strong><span>класс <code>User</code>, который ещё и печатает, сохраняет в файл и отправляет письма; сигнал к декомпозиции.</span></li>
+            <li><strong>null-свойства</strong><span>при обращении к членам <code>null</code> падение; проверять или использовать <code>?</code>/<code>??</code> (кратко упомянуть).</span></li>
+        </ul>
+    </div>
+
+    <!-- 13. ИТОГИ -->
+    <div class="card">
+        <h2>13. Итоги и что дальше</h2>
+        <p><strong>Вывод:</strong> разобрались, что такое класс и объект, освоили поля, свойства, методы, конструкторы, модификаторы доступа и <code>static</code>.
+    </div>
+        <div class="quote-block">
+            <strong>Следующая консультация</strong> — Генерация случайных чисел в C#
+        </div>
+    <div class="footer">
+        Консультация 9 — — Основы ООП
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+</html>

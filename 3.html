@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="12.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Консультация 3 — Операторы и выражения</title>
+</head>
+<body>
+
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <h3>C#</h3>
+        <p>Коротко о главном</p>
+    </div>
+    <div class="sidebar-nav">
+        <div class="nav-group">
+            <div class="nav-group-title">Основное</div>
+            <div class="nav-item">
+                <a href="index.html">
+                    <span class="nav-icon">🏠</span>
+                    <span>Главная</span>
+                </a>
+            </div>
+        </div>
+        <div class="nav-group">
+            <div class="nav-group-title">Консультации</div>
+            <div class="nav-item">
+                <a href="1.html">
+                    <span class="nav-icon">1</span>
+                    <span>Консультация 1</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="2.html">
+                    <span class="nav-icon">2</span>
+                    <span>Консультация 2</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="3.html">
+                    <span class="nav-icon">3</span>
+                    <span>Консультация 3</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="4.html">
+                    <span class="nav-icon">4</span>
+                    <span>Консультация 4</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="5.html">
+                    <span class="nav-icon">5</span>
+                    <span>Консультация 5</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="6.html">
+                    <span class="nav-icon">6</span>
+                    <span>Консультация 6</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="7.html">
+                    <span class="nav-icon">7</span>
+                    <span>Консультация 7</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="8.html">
+                    <span class="nav-icon">8</span>
+                    <span>Консультация 8</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="9.html">
+                    <span class="nav-icon">9</span>
+                    <span>Консультация 9</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="10.html">
+                    <span class="nav-icon">10</span>
+                    <span>Консультация 10</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">
+    ☰ Меню
+</div>
+
+<!-- ОСНОВНОЙ КОНТЕНТ -->
+<div class="main-content">
+
+    <div class="page-header">
+        <h1>Консультация 3. Операторы и выражения</h1>
+        <p class="subtitle">Арифметика, сравнения, логика, побитовые операторы, приоритет, тернарный оператор и работа со строками</p>
+    </div>
+
+    <!-- ЦЕЛИ -->
+    <div class="card">
+        <h2>Цели консультации</h2>
+        <p>К концу занятия слушатель должен:</p>
+        <ul class="feature-list">
+            <li><strong>Понимать</strong><span>что такое выражение и оператор, чем они отличаются</span></li>
+            <li><strong>Уметь</strong><span>уверенно пользоваться арифметическими, сравнительными, логическими и побитовыми операторами</span></li>
+            <li><strong>Знать</strong><span>приоритет операторов и уметь расставлять скобки</span></li>
+            <li><strong>Понимать</strong><span>префиксный и постфиксный инкремент/декремент</span></li>
+            <li><strong>Уметь</strong><span>применять тернарный оператор</span></li>
+            <li><strong>Уметь</strong><span>собирать строки конкатенацией и интерполяцией</span></li>
+        </ul>
+    </div>
+
+    <!-- 1. ВЫРАЖЕНИЕ И ОПЕРАТОР -->
+    <div class="card">
+        <h2>1. Выражение и оператор</h2>
+        <p><strong>Выражение</strong> — конструкция, которая вычисляется в значение: <code>2 + 3</code>, <code>x * y</code>, <code>name.Length</code>. У выражения есть результат и тип.</p>
+        <p style="margin-top:0.75rem;"><strong>Оператор</strong> (инструкция, <em>statement</em>) — законченное действие, обычно завершается <code>;</code>: <code>int x = 5;</code>, <code>Console.WriteLine(x);</code>. Выражение может быть частью оператора.</p>
+
+        <div class="quote-block">
+            <strong>Ключевая мысль занятия:</strong> операторы работают с операндами и возвращают результат определённого типа — и этот тип важно понимать, чтобы не ловить сюрпризы вроде <code>5 / 2 == 2</code>.
+        </div>
+    </div>
+
+    <!-- 2. АРИФМЕТИЧЕСКИЕ ОПЕРАТОРЫ -->
+    <div class="card">
+        <h2>2. Арифметические операторы</h2>
+        <ul class="feature-list">
+            <li><strong>+</strong><span>сложение — <code>a + b</code></span></li>
+            <li><strong>-</strong><span>вычитание — <code>a - b</code></span></li>
+            <li><strong>*</strong><span>умножение — <code>a * b</code></span></li>
+            <li><strong>/</strong><span>деление — <code>a / b</code></span></li>
+            <li><strong>%</strong><span>остаток от деления — <code>a % b</code></span></li>
+            <li><strong>++</strong><span>инкремент — <code>a++</code>, <code>++a</code></span></li>
+            <li><strong>--</strong><span>декремент — <code>a--</code>, <code>--a</code></span></li>
+        </ul>
+
+        <div class="quote-block" style="margin-top:1rem;">
+            <strong>Главная ловушка — деление целых.</strong> Если оба операнда целые, результат тоже целый, дробная часть отбрасывается.
+        </div>
+
+        <div class="code-block"><span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="num">5</span> / <span class="num">2</span>);      <span class="cmt">// 2</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="num">5</span> / <span class="num">2.0</span>);    <span class="cmt">// 2.5</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="num">5</span> % <span class="num">2</span>);      <span class="cmt">// 1</span></div>
+        <p class="subtitle" style="font-size:0.85rem; margin-top:0.5rem; color:var(--text-dim);">Чтобы получить дробный результат, хотя бы один операнд должен быть дробным (или нужен явный привод).</p>
+
+        <p style="margin-top:0.75rem;">Остаток <code>%</code> полезен для проверки чётности (<code>x % 2 == 0</code>) и цикличности (индексы, «каждый N-й»).</p>
+
+        <div class="quote-block">
+            <strong>Деление на ноль:</strong> для целых — исключение <code>DivideByZeroException</code>; для <code>double</code>/<code>decimal</code> — <code>double</code> даёт <code>Infinity</code>/<code>NaN</code>, <code>decimal</code> бросает исключение. Это стоит проговорить, чтобы не было сюрпризов.
+        </div>
+
+        <h3 style="margin-top:1.25rem;">Инкремент/декремент — префиксный и постфиксный</h3>
+        <div class="code-block"><span class="kw">int</span> a = <span class="num">5</span>;
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(a++); <span class="cmt">// 5, затем a = 6 (постфиксный: сначала значение, потом увеличение)</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(++a); <span class="cmt">// 7 (префиксный: сначала увеличение, потом значение)</span></div>
+        <p class="subtitle" style="font-size:0.85rem; margin-top:0.5rem; color:var(--text-dim);">На занятии — обязательно показать на доске/в отладчике, потому что это классический источник ошибок.</p>
+    </div>
+
+    <!-- 3. ОПЕРАТОРЫ ПРИСВАИВАНИЯ -->
+    <div class="card">
+        <h2>3. Операторы присваивания</h2>
+        <p>Базовый <code>=</code> и составные:</p>
+        <div class="code-block"><span class="kw">int</span> x = <span class="num">10</span>;
+x += <span class="num">5</span>;   <span class="cmt">// x = x + 5  → 15</span>
+x -= <span class="num">3</span>;   <span class="cmt">// 12</span>
+x *= <span class="num">2</span>;   <span class="cmt">// 24</span>
+x /= <span class="num">4</span>;   <span class="cmt">// 6</span>
+x %= <span class="num">4</span>;   <span class="cmt">// 2</span></div>
+        <p style="margin-top:0.75rem;">Составные операторы работают и с другими типами: <code>+=</code> для строк — конкатенация (<code>s += "!"</code>).</p>
+
+        <div class="quote-block">
+            Отдельно упомянуть: <code>x = y = z = 0</code> работает (присваивание возвращает значение), но читаемость страдает — лучше не злоупотреблять.
+        </div>
+    </div>
+
+    <!-- 4. ОПЕРАТОРЫ СРАВНЕНИЯ -->
+    <div class="card">
+        <h2>4. Операторы сравнения</h2>
+        <p>Возвращают <code>bool</code>:</p>
+        <div class="code-block">a == b   <span class="cmt">// равно</span>
+a != b   <span class="cmt">// не равно</span>
+a &gt; b    <span class="cmt">// больше</span>
+a &lt; b    <span class="cmt">// меньше</span>
+a &gt;= b   <span class="cmt">// больше или равно</span>
+a &lt;= b   <span class="cmt">// меньше или равно</span></div>
+
+        <div class="quote-block">
+            <strong>Важно:</strong> <code>=</code> — присваивание, <code>==</code> — сравнение. Компилятор поймает часть ошибок (<code>if (x = 5)</code> для <code>int</code> — ошибка), но для <code>bool</code> — нет, поэтому внимательность нужна.
+        </div>
+        <p style="margin-top:0.75rem;">Сравнение ссылочных типов (<code>string</code>, массивы) — это отдельная тема: <code>==</code> для <code>string</code> сравнивает содержимое (перегружен), а для массивов — ссылки. На базовом уровне достаточно: для строк <code>==</code> работает «как ожидается», для остальных ссылочных — пока не углубляемся.</p>
+    </div>
+
+    <!-- 5. ЛОГИЧЕСКИЕ ОПЕРАТОРЫ -->
+    <div class="card">
+        <h2>5. Логические операторы</h2>
+        <ul class="feature-list">
+            <li><strong>&amp;&amp;</strong><span>И (логическое) — <code>a &gt; 0 &amp;&amp; b &gt; 0</code></span></li>
+            <li><strong>||</strong><span>ИЛИ — <code>a &gt; 0 || b &gt; 0</code></span></li>
+            <li><strong>!</strong><span>НЕ — <code>!flag</code></span></li>
+            <li><strong>^</strong><span>исключающее ИЛИ — <code>a ^ b</code> (для <code>bool</code>)</span></li>
+        </ul>
+
+        <div class="quote-block" style="margin-top:1rem;">
+            <strong>Ключевое понятие — сокращённое вычисление (short-circuit):</strong>
+        </div>
+        <div class="code-block"><span class="kw">if</span> (list != <span class="kw">null</span> &amp;&amp; list.Count &gt; <span class="num">0</span>) { ... } <span class="cmt">// если list == null, вторая часть не вычисляется</span></div>
+        <p style="margin-top:0.75rem;">Это не просто оптимизация — это защита от <code>NullReferenceException</code>. Обязательно проговорить.</p>
+
+        <div class="quote-block">
+            Разница <code>&amp;</code>/<code>&amp;&amp;</code> и <code>|</code>/<code>||</code>: одиночные не сокращают вычисления и применимы к целым (побитово). На базовом уровне: для логики всегда <code>&amp;&amp;</code>/<code>||</code>, если нет особой причины.
+        </div>
+    </div>
+
+    <!-- 6. ПОБИТОВЫЕ ОПЕРАТОРЫ -->
+    <div class="card">
+        <h2>6. Побитовые операторы</h2>
+        <p>Кратко, но показать — полезно для понимания флагов и <code>enum</code>:</p>
+        <div class="code-block"><span class="kw">int</span> a = <span class="num">5</span>;   <span class="cmt">// 0101</span>
+<span class="kw">int</span> b = <span class="num">3</span>;   <span class="cmt">// 0011</span>
+a &amp; b        <span class="cmt">// 0001 = 1</span>
+a | b        <span class="cmt">// 0111 = 7</span>
+a ^ b        <span class="cmt">// 0110 = 6</span>
+~a           <span class="cmt">// побитовое НЕ</span>
+a &lt;&lt; <span class="num">1</span>       <span class="cmt">// сдвиг влево: 1010 = 10</span>
+a &gt;&gt; <span class="num">1</span>       <span class="cmt">// сдвиг вправо: 0010 = 2</span></div>
+        <p class="subtitle" style="font-size:0.85rem; margin-top:0.5rem; color:var(--text-dim);">Не углубляться: цель — узнать, что они есть, и понимать <code>&lt;&lt; 1</code> как умножение на 2.</p>
+    </div>
+
+    <!-- 7. ПРИОРИТЕТ ОПЕРАТОРОВ -->
+    <div class="card">
+        <h2>7. Приоритет операторов</h2>
+        <p>Порядок (упрощённо, от высшего к низшему):</p>
+        <ul class="feature-list">
+            <li><strong>()</strong><span>скобки</span></li>
+            <li><strong>++, --</strong><span>(постфиксные), <code>!</code>, унарный <code>-</code></span></li>
+            <li><strong>*, /, %</strong><span>умножение, деление, остаток</span></li>
+            <li><strong>+, -</strong><span>сложение, вычитание</span></li>
+            <li><strong>&lt;&lt;, &gt;&gt;</strong><span>сдвиги</span></li>
+            <li><strong>&lt;, &gt;, &lt;=, &gt;=</strong><span>сравнения</span></li>
+            <li><strong>==, !=</strong><span>равенство</span></li>
+            <li><strong>&amp;, ^, |</strong><span>побитовые</span></li>
+            <li><strong>&amp;&amp;, ||</strong><span>логические</span></li>
+            <li><strong>?:</strong><span>тернарный</span></li>
+            <li><strong>=</strong><span>и составные присваивания</span></li>
+        </ul>
+
+        <div class="quote-block">
+            <strong>Практическое правило:</strong> если сомневаетесь — ставьте скобки. Это не признак слабости, а признак читаемого кода.
+        </div>
+
+        <p style="margin-top:0.75rem;"><strong>Пример-ловушка:</strong></p>
+        <div class="code-block"><span class="kw">bool</span> result = a &gt; <span class="num">0</span> &amp;&amp; b &gt; <span class="num">0</span> || c &gt; <span class="num">0</span>;
+<span class="cmt">// читается как: (a &gt; 0 &amp;&amp; b &gt; 0) || (c &gt; 0)</span></div>
+    </div>
+
+    <!-- 8. ТЕРНАРНЫЙ ОПЕРАТОР -->
+    <div class="card">
+        <h2>8. Тернарный оператор</h2>
+        <div class="code-block">условие ? значениеЕслиTrue : значениеЕслиFalse</div>
+        <div class="code-block" style="margin-top:1rem;"><span class="kw">int</span> age = <span class="num">20</span>;
+<span class="kw">string</span> status = age &gt;= <span class="num">18</span> ? <span class="str">"взрослый"</span> : <span class="str">"несовершеннолетний"</span>;</div>
+
+        <div class="quote-block">
+            <strong>Правила:</strong> обе ветви должны давать совместимые типы; вложенные тернарники допустимы, но быстро теряют читаемость — лучше <code>if/else</code>, если больше двух вариантов.
+        </div>
+    </div>
+
+    <!-- 9. РАБОТА СО СТРОКАМИ -->
+    <div class="card">
+        <h2>9. Работа со строками</h2>
+
+        <h3>Конкатенация +</h3>
+        <div class="code-block"><span class="kw">string</span> name = <span class="str">"Анна"</span>;
+<span class="kw">int</span> age = <span class="num">25</span>;
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Имя: "</span> + name + <span class="str">", возраст: "</span> + age);</div>
+        <p class="subtitle" style="font-size:0.85rem; margin-top:0.5rem; color:var(--text-dim);">Работает, но громоздко и легко ошибиться с пробелами; плюс неявно вызывает <code>ToString()</code>.</p>
+
+        <h3 style="margin-top:1.25rem;">Интерполяция $&quot;...&quot; — современный и предпочтительный способ</h3>
+        <div class="code-block"><span class="type">Console</span>.<span class="fn">WriteLine</span>($<span class="str">"Имя: {name}, возраст: {age}"</span>);
+<span class="type">Console</span>.<span class="fn">WriteLine</span>($<span class="str">"Через год: {age + 1}"</span>);</div>
+        <p style="margin-top:0.75rem;">Внутри <code>{}</code> можно писать выражения и форматирование: <code>{age:D3}</code>, <code>{price:F2}</code>, <code>{date:dd.MM.yyyy}</code>. Это стоит показать — сразу пригодится в задачах.</p>
+
+        <div class="quote-block">
+            <code>string.Format</code> и <code>+</code> — упомянуть как альтернативы, но рекомендовать интерполяцию.<br><br>
+            <strong>Важно:</strong> <code>string</code> неизменяемый, поэтому конкатенация в цикле — плохая идея (много промежуточных строк); для этого есть <code>StringBuilder</code> (подробнее — на теме строк).
+        </div>
+    </div>
+
+    <!-- 10. ПРАКТИЧЕСКИЕ ЗАДАНИЯ -->
+    <div class="card">
+        <h2>10. Практические задания</h2>
+        <div class="grid-2">
+            <div>
+                <ul class="feature-list">
+                    <li><strong>1</strong><span>Вычислить и вывести результаты всех арифметических операций для двух введённых чисел (включая остаток и деление с дробным результатом).</span></li>
+                    <li><strong>2</strong><span>Проверить, является ли число чётным (<code>%</code>), и вывести результат через тернарный оператор.</span></li>
+                    <li><strong>3</strong><span>Показать разницу <code>a++</code> и <code>++a</code> на примере с выводом до/после.</span></li>
+                    <li><strong>4</strong><span>Написать условие «число в диапазоне от 1 до 100 включительно» через <code>&amp;&amp;</code> и проверить на разных значениях.</span></li>
+                </ul>
+            </div>
+            <div>
+                <ul class="feature-list">
+                    <li><strong>5</strong><span>Продемонстрировать short-circuit: <code>if (s != null &amp;&amp; s.Length &gt; 0)</code> и объяснить, почему без <code>&amp;&amp;</code> упадёт.</span></li>
+                    <li><strong>6</strong><span>Собрать строку с именем, возрастом и городом через конкатенацию и через интерполяцию; сравнить читаемость.</span></li>
+                    <li><strong>7</strong><span>Вывести стоимость товара с форматированием <code>{price:F2}</code> (два знака после запятой).</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 11. ТИПИЧНЫЕ ОШИБКИ -->
+    <div class="card">
+        <h2>11. Типичные ошибки и вопросы новичков</h2>
+        <ul class="feature-list">
+            <li><strong>5 / 2 == 2</strong><span>забыли про целочисленное деление.</span></li>
+            <li><strong>= вместо ==</strong><span>в условиях — особенно для <code>bool</code>.</span></li>
+            <li><strong>a++ и ++a</strong><span>путаница — разбираем на конкретных примерах.</span></li>
+            <li><strong>&amp;/| вместо &amp;&amp;/||</strong><span>нет короткого замыкания, возможен <code>NullReferenceException</code>.</span></li>
+            <li><strong>Забытые скобки</strong><span>в составных условиях — <code>a || b &amp;&amp; c</code> читается не так, как кажется.</span></li>
+            <li><strong>+ со строками и числами</strong><span><code>"1" + 2</code> даёт <code>"12"</code>, а не <code>3</code>; и наоборот, <code>1 + 2 + "3"</code> даёт <code>"33"</code> (слева направо).</span></li>
+            <li><strong>double и равенство</strong><span><code>0.1 + 0.2 == 0.3</code> даёт <code>false</code>; сравнивать с допуском.</span></li>
+            <li><strong>Тернарник для побочных эффектов</strong><span>он для значений, а не для действий.</span></li>
+            <li><strong>Приоритет % и *</strong><span>равны, выполняются слева направо.</span></li>
+        </ul>
+    </div>
+
+    <!-- 12. ИТОГИ -->
+    <div class="card">
+        <h2>12. Итоги и что дальше</h2>
+        <p><strong>Вывод:</strong> разобрали, что такое выражение и оператор, освоили арифметику (с ловушками целочисленного деления), сравнения, логику с коротким замыканием, побитовые операторы, приоритет, тернарный оператор и сборку строк через интерполяцию.</p>
+
+        <div class="quote-block">
+            <strong>Следующая консультация</strong> — условные конструкции и ветвление (if/else, switch, pattern matching).
+        </div>
+    </div>
+
+    <div class="footer">
+        Консультация 3 — Операторы и выражения
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

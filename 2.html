@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="12.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Консультация 2 — Переменные, типы данных и преобразования</title>
+</head>
+<body>
+
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <h3>C#</h3>
+        <p>Коротко о главном</p>
+    </div>
+    <div class="sidebar-nav">
+        <div class="nav-group">
+            <div class="nav-group-title">Основное</div>
+            <div class="nav-item">
+                <a href="index.html">
+                    <span class="nav-icon">🏠</span>
+                    <span>Главная</span>
+                </a>
+            </div>
+        </div>
+        <div class="nav-group">
+            <div class="nav-group-title">Консультации</div>
+            <div class="nav-item">
+                <a href="1.html">
+                    <span class="nav-icon">1</span>
+                    <span>Консультация 1</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="2.html">
+                    <span class="nav-icon">2</span>
+                    <span>Консультация 2</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="3.html">
+                    <span class="nav-icon">3</span>
+                    <span>Консультация 3</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="4.html">
+                    <span class="nav-icon">4</span>
+                    <span>Консультация 4</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="5.html">
+                    <span class="nav-icon">5</span>
+                    <span>Консультация 5</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="6.html">
+                    <span class="nav-icon">6</span>
+                    <span>Консультация 6</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="7.html">
+                    <span class="nav-icon">7</span>
+                    <span>Консультация 7</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="8.html">
+                    <span class="nav-icon">8</span>
+                    <span>Консультация 8</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="9.html">
+                    <span class="nav-icon">9</span>
+                    <span>Консультация 9</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="10.html">
+                    <span class="nav-icon">10</span>
+                    <span>Консультация 10</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">
+    ☰ Меню
+</div>
+
+<!-- ОСНОВНОЙ КОНТЕНТ -->
+<div class="main-content">
+
+    <div class="page-header">
+        <h1>Консультация 2. Переменные, типы данных и преобразования</h1>
+        <p class="subtitle">Значимые и ссылочные типы, объявление переменных, var, явные и неявные преобразования, Convert и TryParse</p>
+    </div>
+
+    <!-- ЦЕЛИ -->
+    <div class="card">
+        <h2>Цели консультации</h2>
+        <p>К концу занятия слушатель должен:</p>
+        <ul class="feature-list">
+            <li><strong>Понимать</strong><span>что такое переменная и зачем нужны типы</span></li>
+            <li><strong>Знать</strong><span>основные значимые и ссылочные типы C# и их различия</span></li>
+            <li><strong>Уметь</strong><span>объявлять переменные, присваивать значения, использовать <code>var</code></span></li>
+            <li><strong>Понимать</strong><span>явное и неявное преобразование типов, уметь пользоваться <code>Convert</code> и <code>Parse</code></span></li>
+            <li><strong>Знать</strong><span>что такое константы, и когда их использовать</span></li>
+        </ul>
+    </div>
+
+    <!-- 1. ПЕРЕМЕННАЯ И ТИП -->
+    <div class="card">
+        <h2>1. Что такое переменная и тип</h2>
+        <p><strong>Переменная</strong> — именованная область памяти, в которой хранится значение определённого типа. Тип определяет:</p>
+        <ul class="feature-list">
+            <li><strong>Значения</strong><span>какие значения можно хранить</span></li>
+            <li><strong>Память</strong><span>сколько памяти занимает значение</span></li>
+            <li><strong>Операции</strong><span>какие операции допустимы</span></li>
+        </ul>
+
+        <p style="margin-top:0.75rem;">В C# тип указывается при объявлении и (в большинстве случаев) не меняется:</p>
+        <div class="code-block"><span class="kw">int</span> age = <span class="num">25</span>;
+<span class="kw">string</span> name = <span class="str">"Анна"</span>;</div>
+
+        <p style="margin-top:0.75rem;"><strong>Правила именования:</strong> буквы, цифры, <code>_</code>, не начинается с цифры; рекомендуется <em>camelCase</em> для локальных переменных и <em>PascalCase</em> для типов и методов; имена осмысленные (<code>userCount</code>, а не <code>x</code>).</p>
+    </div>
+
+    <!-- 2. ЗНАЧИМЫЕ И ССЫЛОЧНЫЕ ТИПЫ -->
+    <div class="card">
+        <h2>2. Значимые и ссылочные типы</h2>
+        <p>Ключевое различие:</p>
+        <ul class="feature-list">
+            <li><strong>Значимые</strong><span><em>value types</em> — хранят само значение «на месте». При присваивании значение копируется. Примеры: <code>int</code>, <code>double</code>, <code>bool</code>, <code>char</code>, <code>decimal</code>, <code>struct</code>, <code>enum</code>.</span></li>
+            <li><strong>Ссылочные</strong><span><em>reference types</em> — хранят ссылку на объект в куче. При присваивании копируется ссылка, а не объект. Примеры: <code>string</code>, массивы, классы, <code>object</code>.</span></li>
+        </ul>
+
+        <p style="margin-top:0.75rem;"><strong>Демонстрация на занятии:</strong></p>
+        <div class="code-block"><span class="kw">int</span> a = <span class="num">5</span>;
+<span class="kw">int</span> b = a;   <span class="cmt">// копия значения</span>
+b = <span class="num">10</span>;
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(a); <span class="cmt">// 5 — a не изменилось</span>
+</div>
+
+        <div class="quote-block">
+            Отдельно про <code>string</code>: это ссылочный тип, но он <strong>неизменяемый</strong> (<em>immutable</em>) — операции создают новую строку. Это часто удивляет новичков, стоит показать на примере.
+        </div>
+    </div>
+
+    <!-- 3. ОСНОВНЫЕ ТИПЫ ДАННЫХ -->
+    <div class="card">
+        <h2>3. Основные типы данных</h2>
+
+        <h3>Целые числа</h3>
+        <ul class="feature-list">
+            <li><strong>byte</strong><span>0…255 — 1 байт</span></li>
+            <li><strong>short</strong><span>−32 768…32 767 — 2 байта</span></li>
+            <li><strong>int</strong><span>≈ ±2,1 млрд — 4 байта</span></li>
+            <li><strong>long</strong><span>≈ ±9,2·10¹⁸ — 8 байт</span></li>
+        </ul>
+        <p class="subtitle" style="font-size:0.85rem; margin-top:0.5rem; color:var(--text-dim);"><code>int</code> — тип по умолчанию для целых литералов. Суффикс <code>L</code> — для <code>long</code> (<code>long x = 10L;</code>).</p>
+
+        <h3 style="margin-top:1.25rem;">Числа с плавающей точкой</h3>
+        <ul class="feature-list">
+            <li><strong>float</strong><span>(суффикс <code>f</code>) — ~7 значащих цифр</span></li>
+            <li><strong>double</strong><span>~15–17 значащих цифр, тип по умолчанию для дробных литералов</span></li>
+            <li><strong>decimal</strong><span>(суффикс <code>m</code>) — точные десятичные вычисления, используется для денег</span></li>
+        </ul>
+
+        <div class="quote-block">
+            <strong>Важно проговорить:</strong> <code>double</code>/<code>float</code> хранят приближение, поэтому <code>0.1 + 0.2 != 0.3</code> в общем случае. Для финансов — только <code>decimal</code>.
+        </div>
+
+        <h3 style="margin-top:1.25rem;">Остальные</h3>
+        <ul class="feature-list">
+            <li><strong>bool</strong><span><code>true</code>/<code>false</code>, без приведения к числу (в отличие от C/C++)</span></li>
+            <li><strong>char</strong><span>один символ в одинарных кавычках: <code>'A'</code>, <code>'5'</code>, <code>'\n'</code></span></li>
+            <li><strong>string</strong><span>последовательность символов в двойных кавычках; <code>null</code> допустим</span></li>
+        </ul>
+
+        <div class="badge-row" style="margin-top:1rem;">
+            <span class="feature-tag">object — базовый для всех типов</span>
+            <span class="feature-tag">var — не тип, а вывод типа компилятором</span>
+            <span class="feature-tag">dynamic — на базовом уровне не нужен</span>
+            <span class="feature-tag">int? — nullable-типы</span>
+        </div>
+    </div>
+
+    <!-- 4. ОБЪЯВЛЕНИЕ И ИНИЦИАЛИЗАЦИЯ -->
+    <div class="card">
+        <h2>4. Объявление и инициализация</h2>
+        <div class="code-block"><span class="kw">int</span> count;              <span class="cmt">// объявление без значения</span>
+count = <span class="num">10</span>;             <span class="cmt">// присваивание</span>
+<span class="kw">int</span> total = <span class="num">100</span>;        <span class="cmt">// объявление с инициализацией</span>
+<span class="kw">int</span> x = <span class="num">1</span>, y = <span class="num">2</span>;       <span class="cmt">// несколько переменных одного типа</span>
+<span class="kw">const</span> <span class="kw">double</span> Pi = <span class="num">3.14</span>; <span class="cmt">// константа — значение задаётся при объявлении и в дальнейшем не изменяется</span></div>
+
+        <div class="quote-block" style="margin-top:1rem;">
+            Локальные переменные обязаны быть инициализированы до использования — компилятор это проверяет (в отличие от полей класса, которые получают значение по умолчанию).
+        </div>
+
+        <p style="margin-top:0.75rem;"><code>var</code> — не «любой тип», а вывод типа компилятором по правой части:</p>
+        <div class="code-block"><span class="kw">var</span> n = <span class="num">5</span>;          <span class="cmt">// int</span>
+<span class="kw">var</span> s = <span class="str">"текст"</span>;    <span class="cmt">// string</span>
+<span class="kw">var</span> d = <span class="num">3.14</span>;       <span class="cmt">// double</span>
+<span class="cmt">// var v;           // ошибка: тип нельзя вывести</span></div>
+        <p class="subtitle" style="font-size:0.85rem; margin-top:0.5rem; color:var(--text-dim);"><code>var</code> полезен при длинных типах, но злоупотреблять им не стоит там, где тип неочевиден из правой части.</p>
+    </div>
+
+    <!-- 5. ПРЕОБРАЗОВАНИЯ ТИПОВ -->
+    <div class="card">
+        <h2>5. Преобразования типов</h2>
+
+        <h3>Неявное (implicit)</h3>
+        <p>Безопасное, без потери данных, выполняется автоматически:</p>
+        <div class="code-block"><span class="kw">int</span> i = <span class="num">10</span>;
+<span class="kw">long</span> l = i;      <span class="cmt">// int → long, ок</span>
+<span class="kw">double</span> d = i;    <span class="cmt">// int → double, ок</span></div>
+
+        <h3 style="margin-top:1.25rem;">Явное (explicit, приведение)</h3>
+        <p>Может привести к потере данных, требует указания типа в скобках:</p>
+        <div class="code-block"><span class="kw">double</span> d = <span class="num">9.99</span>;
+<span class="kw">int</span> i = (<span class="kw">int</span>)d;  <span class="cmt">// 9 — дробная часть отбрасывается</span></div>
+        <div class="quote-block" style="margin-top:1rem;">
+            <strong>Важно:</strong> при переполнении (например, <code>(byte)300</code>) результат «заворачивается» — стоит упомянуть, что есть <code>checked</code>/<code>unchecked</code>, но на базовом уровне достаточно знать о риске.
+        </div>
+
+        <h3 style="margin-top:1.25rem;">Преобразование строк</h3>
+        <div class="code-block"><span class="kw">string</span> s = <span class="str">"123"</span>;
+<span class="kw">int</span> a = <span class="kw">int</span>.<span class="fn">Parse</span>(s);        <span class="cmt">// бросает исключение, если строка не число</span>
+<span class="kw">bool</span> ok = <span class="kw">int</span>.<span class="fn">TryParse</span>(s, <span class="kw">out</span> <span class="kw">int</span> b); <span class="cmt">// безопасный вариант: ok = true, b = 123</span></div>
+
+        <h3 style="margin-top:1.25rem;">Convert</h3>
+        <p>Универсальный класс для преобразований между базовыми типами:</p>
+        <div class="code-block"><span class="kw">int</span> n = <span class="type">Convert</span>.<span class="fn">ToInt32</span>(<span class="str">"42"</span>);
+<span class="kw">double</span> d = <span class="type">Convert</span>.<span class="fn">ToDouble</span>(<span class="str">"3.5"</span>);
+<span class="kw">string</span> s = <span class="type">Convert</span>.<span class="fn">ToString</span>(<span class="num">100</span>);</div>
+
+        <p style="margin-top:0.75rem;"><strong>Отличия, которые стоит проговорить:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Convert / TryParse</strong><span>для строк и конкретного типа</span></li>
+            <li><strong>Convert</strong><span>удобен при работе с <code>object</code>, <code>null</code> (например, <code>Convert.ToInt32(null)</code> вернёт 0, а <code>int.Parse(null)</code> бросит исключение)</span></li>
+            <li><strong>TryParse</strong><span>предпочтителен, когда данные приходят извне (ввод пользователя, файл)</span></li>
+        </ul>
+
+        <div class="quote-block">
+            Приведение ссылочных типов (<code>as</code>, <code>is</code>) — только упомянуть, подробно на теме ООП.
+        </div>
+    </div>
+
+    <!-- 6. ВВОД ПОЛЬЗОВАТЕЛЯ -->
+    <div class="card">
+        <h2>6. Работа с вводом пользователя</h2>
+        <p>Практически важный сценарий:</p>
+        <div class="code-block"><span class="type">Console</span>.<span class="fn">Write</span>(<span class="str">"Введите возраст: "</span>);
+<span class="kw">string</span> input = <span class="type">Console</span>.<span class="fn">ReadLine</span>();
+<span class="kw">if</span> (<span class="kw">int</span>.<span class="fn">TryParse</span>(input, <span class="kw">out</span> <span class="kw">int</span> age))
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>($<span class="str">"Вам {age} лет"</span>);
+<span class="kw">else</span>
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Это не число"</span>);</div>
+        <p class="subtitle" style="font-size:0.85rem; margin-top:0.5rem; color:var(--text-dim);">Здесь сразу связываются темы: <code>string</code>, <code>TryParse</code>, <code>if</code>, интерполяция строк.</p>
+    </div>
+
+    <!-- 7. ПРАКТИЧЕСКИЕ ЗАДАНИЯ -->
+    <div class="card">
+        <h2>7. Практические задания</h2>
+        <div class="grid-2">
+            <div>
+                <ul class="feature-list">
+                    <li><strong>1</strong><span>Объявить переменные всех основных типов и вывести их значения с подписями.</span></li>
+                    <li><strong>2</strong><span>Посчитать сумму двух чисел, введённых пользователем (с обработкой неверного ввода через <code>TryParse</code>).</span></li>
+                    <li><strong>3</strong><span>Продемонстрировать разницу значимого и ссылочного типа на примере <code>int</code> и массива (как в разделе 2).</span></li>
+                </ul>
+            </div>
+            <div>
+                <ul class="feature-list">
+                    <li><strong>4</strong><span>Вычислить площадь круга по радиусу; сравнить результат в <code>double</code> и <code>decimal</code> для денежного примера.</span></li>
+                    <li><strong>5</strong><span>Объяснить, что выведет <code>Console.WriteLine(0.1 + 0.2);</code> и почему.</span></li>
+                    <li><strong>6</strong><span>Перевести температуру из Цельсия в Фаренгейт (дробные числа, форматирование).</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. ТИПИЧНЫЕ ОШИБКИ -->
+    <div class="card">
+        <h2>8. Типичные ошибки и вопросы новичков</h2>
+        <ul class="feature-list">
+            <li><strong>Parse("abc")</strong><span>падает — учимся использовать <code>TryParse</code> или <code>try/catch</code> (последнее — на будущей теме).</span></li>
+            <li><strong>= и ==</strong><span>путаница — присваивание vs сравнение.</span></li>
+            <li><strong>5 / 2</strong><span>деление целых даёт <code>2</code>, а не <code>2.5</code>; нужно <code>5.0 / 2</code> или приведение.</span></li>
+            <li><strong>double для денег</strong><span>объяснить, почему это плохо, и показать <code>decimal</code>.</span></li>
+            <li><strong>var</strong><span>это не «динамический тип» — частая ошибка понимания.</span></li>
+            <li><strong>char vs string</strong><span>одинарные vs двойные кавычки.</span></li>
+            <li><strong>Неинициализированная</strong><span>локальная переменная — ошибка компиляции, а не <code>null</code>/<code>0</code>.</span></li>
+            <li><strong>Культура</strong><span>разделитель дробной части — <code>double.Parse("3.5")</code> может вести себя по-разному в разных локалях; упомянуть <code>CultureInfo.InvariantCulture</code>.</span></li>
+        </ul>
+    </div>
+
+    <!-- 9. ИТОГИ -->
+    <div class="card">
+        <h2>9. Итоги и что дальше</h2>
+        <p><strong>Вывод:</strong> разобрали, что такое переменная и тип, чем отличаются значимые и ссылочные типы, изучили основные типы данных, научились объявлять переменные и преобразовывать значения безопасно.</p>
+
+        <div class="quote-block">
+            <strong>Следующая консультация</strong> — операторы и выражения (арифметика, логика, сравнения, работа со строками).
+        </div>
+		        <div class="quote-block">
+				<a href="Памятки/Тема2.docx" style="color:#A179DC">  Памятка </a>
+        </div>
+    </div>
+
+    <div class="footer">
+        Консультация 2 — Переменные, типы данных и преобразования
+    </div>
+
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

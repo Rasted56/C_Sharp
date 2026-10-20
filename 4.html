@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="12.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Консультация 4 — Условные конструкции и ветвление</title>
+</head>
+<body>
+
+<!-- БОКОВАЯ ПАНЕЛЬ -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <h3>C#</h3>
+        <p>Коротко о главном</p>
+    </div>
+    <div class="sidebar-nav">
+        <div class="nav-group">
+            <div class="nav-group-title">Основное</div>
+            <div class="nav-item">
+                <a href="index.html">
+                    <span class="nav-icon">🏠</span>
+                    <span>Главная</span>
+                </a>
+            </div>
+        </div>
+        <div class="nav-group">
+            <div class="nav-group-title">Консультации</div>
+            <div class="nav-item">
+                <a href="1.html">
+                    <span class="nav-icon">1</span>
+                    <span>Консультация 1</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="2.html">
+                    <span class="nav-icon">2</span>
+                    <span>Консультация 2</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="3.html">
+                    <span class="nav-icon">3</span>
+                    <span>Консультация 3</span>
+                </a>
+            </div>
+            <div class="nav-item active">
+                <a href="4.html">
+                    <span class="nav-icon">4</span>
+                    <span>Консультация 4</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="5.html">
+                    <span class="nav-icon">5</span>
+                    <span>Консультация 5</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="6.html">
+                    <span class="nav-icon">6</span>
+                    <span>Консультация 6</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="7.html">
+                    <span class="nav-icon">7</span>
+                    <span>Консультация 7</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="8.html">
+                    <span class="nav-icon">8</span>
+                    <span>Консультация 8</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="9.html">
+                    <span class="nav-icon">9</span>
+                    <span>Консультация 9</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="10.html">
+                    <span class="nav-icon">10</span>
+                    <span>Консультация 10</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">
+    ☰ Меню
+</div>
+
+<!-- ОСНОВНОЙ КОНТЕНТ -->
+<div class="main-content">
+
+    <div class="page-header">
+        <h1>Консультация 4. Условные конструкции и ветвление</h1>
+        <p class="subtitle">if / else if / else, вложенные условия, switch, switch-выражение и pattern matching</p>
+    </div>
+
+    <!-- ЦЕЛИ -->
+    <div class="card">
+        <h2>Цели консультации</h2>
+        <p>К концу занятия слушатель должен:</p>
+        <ul class="feature-list">
+            <li><strong>Понимать</strong><span>зачем нужно ветвление и как работает поток управления</span></li>
+            <li><strong>Уметь</strong><span>уверенно писать <code>if</code>, <code>else if</code>, <code>else</code>, в том числе вложенные</span></li>
+            <li><strong>Знать</strong><span>когда уместен <code>switch</code> и чем он отличается от цепочки <code>if</code></span></li>
+            <li><strong>Уметь</strong><span>пользоваться switch-выражением (C# 8+) и pattern matching</span></li>
+            <li><strong>Видеть</strong><span>типичные ошибки: «висячий else», забытый <code>break</code>, сравнение через <code>=</code>, порядок условий</span></li>
+        </ul>
+    </div>
+
+    <!-- 1. ЗАЧЕМ НУЖНО ВЕТВЛЕНИЕ -->
+    <div class="card">
+        <h2>1. Зачем нужно ветвление</h2>
+        <p>Программа по умолчанию выполняется линейно — сверху вниз. Ветвление позволяет выбрать, какой блок кода выполнить, в зависимости от условия. Условие — это выражение типа <code>bool</code> (<code>true</code>/<code>false</code>). В C# нет неявного приведения чисел к <code>bool</code> (в отличие от C/C++): <code>if (1)</code> — ошибка компиляции, нужно <code>if (x != 0)</code>.</p>
+
+        <div class="quote-block">
+            <strong>Ключевая мысль:</strong> любое ветвление — это «развилка», и важно, чтобы все возможные случаи были осознанно обработаны (или осознанно оставлены без обработки).
+        </div>
+    </div>
+
+    <!-- 2. КОНСТРУКЦИЯ IF -->
+    <div class="card">
+        <h2>2. Конструкция if</h2>
+        <p>Простейшая форма:</p>
+        <div class="code-block"><span class="kw">if</span> (условие)
+{
+    <span class="cmt">// выполняется, если условие true</span>
+}</div>
+
+        <p style="margin-top:0.75rem;">Пример:</p>
+        <div class="code-block"><span class="kw">int</span> age = <span class="num">20</span>;
+<span class="kw">if</span> (age &gt;= <span class="num">18</span>)
+{
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Доступ разрешён"</span>);
+}</div>
+
+        <p style="margin-top:0.75rem;"><strong>Правила:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Условие</strong><span>обязательно типа <code>bool</code></span></li>
+            <li><strong>Тело</strong><span>блок в <code>{}</code>; если инструкция одна, скобки формально можно опустить, но на обучении рекомендуем всегда ставить <code>{}</code> — это защищает от ошибок при доработке</span></li>
+            <li><strong>Отступы</strong><span>обязательны для читаемости</span></li>
+        </ul>
+    </div>
+
+    <!-- 3. IF / ELSE -->
+    <div class="card">
+        <h2>3. if / else</h2>
+        <div class="code-block"><span class="kw">if</span> (age &gt;= <span class="num">18</span>)
+{
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Взрослый"</span>);
+}
+<span class="kw">else</span>
+{
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Несовершеннолетний"</span>);
+}</div>
+        <p style="margin-top:0.75rem;"><code>else</code> выполняется, когда условие ложно. <code>else</code> не имеет собственного условия — он «прилипает» к ближайшему <code>if</code>.</p>
+
+        <div class="quote-block">
+            <strong>«Висячий else» — классическая ловушка:</strong>
+        </div>
+        <div class="code-block"><span class="kw">if</span> (a &gt; <span class="num">0</span>)
+    <span class="kw">if</span> (b &gt; <span class="num">0</span>)
+        <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"оба положительны"</span>);
+    <span class="kw">else</span>
+        <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"b не положительно"</span>); <span class="cmt">// относится ко внутреннему if!</span></div>
+        <p style="margin-top:0.75rem;">Скобки снимают неоднозначность — ещё один аргумент всегда их ставить.</p>
+    </div>
+
+    <!-- 4. ELSE IF -->
+    <div class="card">
+        <h2>4. else if — цепочка условий</h2>
+        <p>Когда вариантов больше двух:</p>
+        <div class="code-block"><span class="kw">int</span> score = <span class="num">75</span>;
+
+<span class="kw">if</span> (score &gt;= <span class="num">90</span>)
+{
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Отлично"</span>);
+}
+<span class="kw">else</span> <span class="kw">if</span> (score &gt;= <span class="num">75</span>)
+{
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Хорошо"</span>);
+}
+<span class="kw">else</span> <span class="kw">if</span> (score &gt;= <span class="num">60</span>)
+{
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Удовлетворительно"</span>);
+}
+<span class="kw">else</span>
+{
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Не сдано"</span>);
+}</div>
+
+        <div class="quote-block">
+            <strong>Критически важное правило:</strong> условия проверяются сверху вниз, и выполняется только первая подходящая ветвь. Поэтому порядок имеет значение: если поменять местами <code>&gt;= 60</code> и <code>&gt;= 75</code>, ветка «Хорошо» станет недостижимой для значений 75–89 (они попадут в <code>&gt;= 60</code>). Это стоит показать на конкретном примере — типичная ошибка новичков.
+        </div>
+
+        <p style="margin-top:0.75rem;"><strong>Альтернатива — независимые <code>if</code></strong> (каждый проверяется отдельно). Разница:</p>
+        <ul class="feature-list">
+            <li><strong>else if</strong><span>взаимоисключающие варианты («одно из»)</span></li>
+            <li><strong>отдельные if</strong><span>независимые проверки («каждое само по себе»)</span></li>
+        </ul>
+        <p style="margin-top:0.75rem;">Учить различать эти два сценария — важная часть занятия.</p>
+    </div>
+
+    <!-- 5. ВЛОЖЕННЫЕ УСЛОВИЯ -->
+    <div class="card">
+        <h2>5. Вложенные условия</h2>
+        <div class="code-block"><span class="kw">if</span> (user != <span class="kw">null</span>)
+{
+    <span class="kw">if</span> (user.IsActive)
+    {
+        <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Добро пожаловать"</span>);
+    }
+    <span class="kw">else</span>
+    {
+        <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Аккаунт заблокирован"</span>);
+    }
+}
+<span class="kw">else</span>
+{
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Пользователь не найден"</span>);
+}</div>
+
+        <div class="quote-block">
+            Вложенность глубже 2–3 уровней — сигнал, что стоит подумать о рефакторинге (ранний выход, объединение условий, выделение метода). Проговорить это сразу, чтобы не приучать к «лесенкам».
+        </div>
+
+        <p style="margin-top:0.75rem;"><strong>Ранний выход (guard clauses):</strong></p>
+        <div class="code-block"><span class="kw">if</span> (user == <span class="kw">null</span>) { <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Не найден"</span>); <span class="kw">return</span>; }
+<span class="kw">if</span> (!user.IsActive) { <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Заблокирован"</span>); <span class="kw">return</span>; }
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Добро пожаловать"</span>);</div>
+        <p style="margin-top:0.75rem;">Показываем как более читаемую альтернативу вложенности.</p>
+    </div>
+
+    <!-- 6. ЛОГИЧЕСКИЕ СВЯЗКИ -->
+    <div class="card">
+        <h2>6. Логические связки в условиях</h2>
+        <p>Условия можно комбинировать через <code>&amp;&amp;</code>, <code>||</code>, <code>!</code> (тема 3). Примеры:</p>
+        <div class="code-block"><span class="kw">if</span> (age &gt;= <span class="num">18</span> &amp;&amp; hasTicket) { ... }
+<span class="kw">if</span> (role == <span class="str">"admin"</span> || role == <span class="str">"moderator"</span>) { ... }
+<span class="kw">if</span> (!isBlocked) { ... }</div>
+
+        <p style="margin-top:0.75rem;">Напоминаем про короткое замыкание и про то, что сложные условия лучше разбивать на именованные переменные:</p>
+        <div class="code-block"><span class="kw">bool</span> isAdult = age &gt;= <span class="num">18</span>;
+<span class="kw">bool</span> canEnter = isAdult &amp;&amp; hasTicket;
+<span class="kw">if</span> (canEnter) { ... }</div>
+    </div>
+
+    <!-- 7. SWITCH -->
+    <div class="card">
+        <h2>7. Конструкция switch</h2>
+        <p>Когда проверяется одно выражение на набор конкретных значений, <code>switch</code> читается лучше цепочки <code>if</code>:</p>
+        <div class="code-block"><span class="kw">int</span> day = <span class="num">3</span>;
+<span class="kw">switch</span> (day)
+{
+    <span class="kw">case</span> <span class="num">1</span>:
+        <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Понедельник"</span>);
+        <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="num">2</span>:
+        <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Вторник"</span>);
+        <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="num">3</span>:
+        <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Среда"</span>);
+        <span class="kw">break</span>;
+    <span class="kw">default</span>:
+        <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Другой день"</span>);
+        <span class="kw">break</span>;
+}</div>
+
+        <p style="margin-top:0.75rem;"><strong>Ключевые правила C#:</strong></p>
+        <ul class="feature-list">
+            <li><strong>case</strong><span>константные значения, совместимые по типу с выражением <code>switch</code></span></li>
+            <li><strong>break</strong><span>обязателен в конце непустой ветви (в C# нет «проваливания» по умолчанию, как в C)</span></li>
+            <li><strong>default</strong><span>необязателен, но полезен как «страховка»</span></li>
+        </ul>
+
+        <p style="margin-top:0.75rem;">Несколько <code>case</code> подряд могут вести к одному блоку:</p>
+        <div class="code-block"><span class="kw">case</span> <span class="num">6</span>:
+<span class="kw">case</span> <span class="num">7</span>:
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Выходной"</span>);
+    <span class="kw">break</span>;</div>
+        <p style="margin-top:0.75rem;">Это законно и часто используется. <code>goto case</code> существует, но на базовом уровне — не рекомендуем; упомянуть, что есть.</p>
+    </div>
+
+    <!-- 8. SWITCH-ВЫРАЖЕНИЕ -->
+    <div class="card">
+        <h2>8. switch-выражение (C# 8+)</h2>
+        <p>Современный и компактный вариант, возвращает значение:</p>
+        <div class="code-block"><span class="kw">string</span> dayName = day <span class="kw">switch</span>
+{
+    <span class="num">1</span> =&gt; <span class="str">"Понедельник"</span>,
+    <span class="num">2</span> =&gt; <span class="str">"Вторник"</span>,
+    <span class="num">3</span> =&gt; <span class="str">"Среда"</span>,
+    <span class="num">6</span> <span class="kw">or</span> <span class="num">7</span> =&gt; <span class="str">"Выходной"</span>,
+    _ =&gt; <span class="str">"Другой день"</span>
+};</div>
+
+        <p style="margin-top:0.75rem;"><strong>Что важно:</strong></p>
+        <ul class="feature-list">
+            <li><strong>_</strong><span>«любой другой случай» (<em>discard</em>, аналог <code>default</code>)</span></li>
+            <li><strong>or, and, not</strong><span>логические паттерны</span></li>
+            <li><strong>Порядок</strong><span>ветви взаимоисключающие, порядок проверки — сверху вниз</span></li>
+            <li><strong>Исключение</strong><span>если ни одна ветвь не подошла и нет <code>_</code> — исключение во время выполнения</span></li>
+        </ul>
+
+        <div class="quote-block">
+            Это стоит показать как «современный способ», но с оговоркой: на старте можно писать обычный <code>switch</code>, а switch-выражение — когда освоитесь.
+        </div>
+    </div>
+
+    <!-- 9. PATTERN MATCHING -->
+    <div class="card">
+        <h2>9. Pattern matching — кратко</h2>
+        <p><code>switch</code> умеет работать не только с константами, но и с паттернами:</p>
+        <div class="code-block"><span class="kw">switch</span> (obj)
+{
+    <span class="kw">case</span> <span class="kw">int</span> n <span class="kw">when</span> n &gt; <span class="num">0</span>:
+        <span class="type">Console</span>.<span class="fn">WriteLine</span>($<span class="str">"Положительное целое: {n}"</span>);
+        <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="kw">string</span> s:
+        <span class="type">Console</span>.<span class="fn">WriteLine</span>($<span class="str">"Строка длины {s.Length}"</span>);
+        <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="kw">null</span>:
+        <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"null"</span>);
+        <span class="kw">break</span>;
+}</div>
+
+        <ul class="feature-list">
+            <li><strong>case int n</strong><span>проверка типа + объявление переменной</span></li>
+            <li><strong>when</strong><span>дополнительное условие (<em>guard</em>)</span></li>
+            <li><strong>case null</strong><span>явная проверка на <code>null</code></span></li>
+        </ul>
+
+        <div class="quote-block">
+            На базовом уровне — обзорно, чтобы слушатель узнал конструкцию и не пугался, встретив её в чужом коде. Подробно — на теме ООП.
+        </div>
+    </div>
+
+    <!-- 10. ПРАКТИЧЕСКИЕ ЗАДАНИЯ -->
+    <div class="card">
+        <h2>10. Практические задания</h2>
+        <div class="grid-2">
+            <div>
+                <ul class="feature-list">
+                    <li><strong>1</strong><span>Ввести число и вывести, положительное оно, отрицательное или ноль (<code>if</code>/<code>else if</code>/<code>else</code>).</span></li>
+                    <li><strong>2</strong><span>Ввести оценку 1–5 и вывести текстовое описание через <code>switch</code>.</span></li>
+                    <li><strong>3</strong><span>Ввести год и определить, високосный ли он (условие с <code>&amp;&amp;</code>/<code>||</code>, аккуратно с порядком).</span></li>
+                    <li><strong>4</strong><span>Калькулятор: два числа и оператор (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>), выбор действия через <code>switch</code>; обработать деление на ноль.</span></li>
+                </ul>
+            </div>
+            <div>
+                <ul class="feature-list">
+                    <li><strong>5</strong><span>Переписать задачу 1 через switch-выражение с pattern matching (<code>case &gt; 0</code>, <code>case &lt; 0</code>, <code>case 0</code> — подсказать синтаксис).</span></li>
+                    <li><strong>6</strong><span>Определить время года по номеру месяца: сначала через <code>if</code>/<code>else if</code>, потом через <code>switch</code> с несколькими <code>case</code>; сравнить читаемость.</span></li>
+                    <li><strong>7</strong><span>Найти и исправить ошибку в коде с «висячим else» (заранее подготовленный пример).</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 11. ТИПИЧНЫЕ ОШИБКИ -->
+    <div class="card">
+        <h2>11. Типичные ошибки и вопросы новичков</h2>
+        <ul class="feature-list">
+            <li><strong>= вместо ==</strong><span>в условии — <code>if (x = 5)</code>.</span></li>
+            <li><strong>Порядок условий</strong><span>в <code>else if</code> — недостижимые ветви из-за неправильной последовательности.</span></li>
+            <li><strong>Забытый break</strong><span>в <code>switch</code> — ошибка компиляции (в C# это плюс, но новичка пугает).</span></li>
+            <li><strong>«Висячий else»</strong><span>без скобок относится не к тому <code>if</code>.</span></li>
+            <li><strong>switch по диапазону</strong><span>по неконстантным значениям — например, по диапазону; нужно <code>if</code> или pattern matching.</span></li>
+            <li><strong>Пустой default</strong><span>отсутствие <code>default</code> — забыли обработать «всё остальное».</span></li>
+            <li><strong>Регистр строк</strong><span>сравнение строк без учёта регистра — <code>"Admin" != "admin"</code>; упомянуть <code>StringComparison.OrdinalIgnoreCase</code>.</span></li>
+            <li><strong>Глубокая вложенность</strong><span>слишком глубокая вложенность — не читается; показать ранний выход.</span></li>
+            <li><strong>if (flag == true)</strong><span>избыточно, достаточно <code>if (flag)</code>.</span></li>
+            <li><strong>else if vs if</strong><span>смешение <code>else if</code> и независимых <code>if</code> — разный смысл, частая логическая ошибка.</span></li>
+        </ul>
+    </div>
+
+    <!-- 12. ИТОГИ -->
+    <div class="card">
+        <h2>12. Итоги и что дальше</h2>
+        <p><strong>Вывод:</strong> освоили <code>if</code>/<code>else if</code>/<code>else</code>, вложенные условия и ранний выход, <code>switch</code> с обязательным <code>break</code> и <code>default</code>, познакомились со switch-выражением и pattern matching. Главные навыки — правильный порядок условий и умение выбрать между <code>if</code> и <code>switch</code>.</p>
+
+        <div class="quote-block">
+            <strong>Следующая консультация</strong> — циклы (for, while, do-while, foreach, break/continue).
+        </div>
+    </div>
+
+    <div class="footer">
+        Консультация 4 — Условные конструкции и ветвление
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

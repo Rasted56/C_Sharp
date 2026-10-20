@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="12.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Консультация 10 — Генерация случайных чисел в C#</title>
+</head>
+<body>
+
+<!-- БОКОВАЯ ПАНЕЛЬ -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <h3>C#</h3>
+        <p>Коротко о главном</p>
+    </div>
+    <div class="sidebar-nav">
+        <div class="nav-group">
+            <div class="nav-group-title">Основное</div>
+            <div class="nav-item">
+                <a href="index.html">
+                    <span class="nav-icon">🏠</span>
+                    <span>Главная</span>
+                </a>
+            </div>
+        </div>
+        <div class="nav-group">
+            <div class="nav-group-title">Консультации</div>
+            <div class="nav-item">
+                <a href="1.html"><span class="nav-icon">1</span><span>Консультация 1</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="2.html"><span class="nav-icon">2</span><span>Консультация 2</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="3.html"><span class="nav-icon">3</span><span>Консультация 3</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="4.html"><span class="nav-icon">4</span><span>Консультация 4</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="5.html"><span class="nav-icon">5</span><span>Консультация 5</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="6.html"><span class="nav-icon">6</span><span>Консультация 6</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="7.html"><span class="nav-icon">7</span><span>Консультация 7</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="8.html"><span class="nav-icon">8</span><span>Консультация 8</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="9.html"><span class="nav-icon">9</span><span>Консультация 9</span></a>
+            </div>
+            <div class="nav-item active">
+                <a href="10.html"><span class="nav-icon">10</span><span>Консультация 10</span></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">
+    ☰ Меню
+</div>
+
+<!-- ОСНОВНОЙ КОНТЕНТ -->
+<div class="main-content">
+
+    <div class="page-header">
+        <h1>Консультация 10. Генерация случайных чисел в C#</h1>
+        <p class="subtitle">Псевдослучайные числа, Random и Random.Shared, seed, диапазоны, выбор элемента и перемешивание</p>
+    </div>
+
+    <div class="quote-block" style="margin-bottom:1.5rem;">
+        <strong>Примечание:</strong> в исходном плане тема 10 была «Обработка исключений и отладка». По вашему запросу заменяю её на тему про рандом. Если нужно — верну исключения отдельной консультацией.
+    </div>
+
+    <!-- ЦЕЛИ -->
+    <div class="card">
+        <h2>Цели консультации</h2>
+        <p>К концу занятия слушатель должен:</p>
+        <ul class="feature-list">
+            <li><strong>Понимать</strong><span>что такое псевдослучайные числа и почему они «псевдо»</span></li>
+            <li><strong>Уметь</strong><span>пользоваться <code>Random</code> и <code>Random.Shared</code> для генерации чисел в диапазоне</span></li>
+            <li><strong>Знать</strong><span>разницу между <code>Next()</code>, <code>Next(max)</code>, <code>Next(min, max)</code> и почему верхняя граница не включается</span></li>
+            <li><strong>Уметь</strong><span>генерировать дробные числа, случайные элементы массива/списка, перемешивать коллекцию</span></li>
+            <li><strong>Понимать</strong><span>роль seed и воспроизводимость</span></li>
+            <li><strong>Знать</strong><span>типичные ошибки: создание <code>Random</code> в цикле, неверные границы, <code>Random</code> и многопоточность</span></li>
+        </ul>
+    </div>
+
+    <!-- 1. ПСЕВДОСЛУЧАЙНЫЕ ЧИСЛА -->
+    <div class="card">
+        <h2>1. Что такое псевдослучайные числа</h2>
+        <p>Компьютер не умеет «бросать кубик» по-настоящему: он вычисляет последовательность чисел по алгоритму от начального значения — <strong>seed</strong> (зерно). Поэтому числа называются <strong>псевдослучайными</strong>: они выглядят случайными, но при одном и том же seed последовательность воспроизводима.</p>
+
+        <p style="margin-top:0.75rem;"><strong>Практические следствия:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Seed явно</strong><span>если задать seed явно — можно повторять сценарии (удобно для тестов и отладки)</span></li>
+            <li><strong>Без seed</strong><span>берётся значение на основе времени/энтропии, и последовательность каждый запуск разная</span></li>
+            <li><strong>Криптография</strong><span>для криптографии обычный <code>Random</code> не подходит — нужен <code>RandomNumberGenerator</code> (упомянуть, не углубляться)</span></li>
+        </ul>
+    </div>
+
+    <!-- 2. КЛАСС RANDOM -->
+    <div class="card">
+        <h2>2. Класс Random: базовое использование</h2>
+        <div class="code-block"><span class="kw">var</span> rnd = <span class="kw">new</span> <span class="type">Random</span>();
+
+<span class="kw">int</span> a = rnd.<span class="fn">Next</span>();          <span class="cmt">// 0 .. int.MaxValue-1</span>
+<span class="kw">int</span> b = rnd.<span class="fn">Next</span>(<span class="num">10</span>);        <span class="cmt">// 0 .. 9 (10 НЕ включается!)</span>
+<span class="kw">int</span> c = rnd.<span class="fn">Next</span>(<span class="num">1</span>, <span class="num">7</span>);      <span class="cmt">// 1 .. 6 — как кубик</span>
+<span class="kw">double</span> d = rnd.<span class="fn">NextDouble</span>(); <span class="cmt">// 0.0 .. 1.0 (1.0 не включается)</span></div>
+
+        <div class="quote-block">
+            <strong>Ключевое правило, которое надо проговорить несколько раз: верхняя граница не включается.</strong><br><br>
+            <code>Next(10)</code> → 0…9;<br>
+            <code>Next(1, 7)</code> → 1…6;<br>
+            чтобы получить «от 1 до 10 включительно» — <code>Next(1, 11)</code>.
+        </div>
+        <p style="margin-top:0.75rem;">Это самая частая ошибка новичков («выпадает только до 9, а надо до 10»). Лучше показать на конкретном «кубике»: <code>Next(1, 7)</code> — правильно, <code>Next(1, 6)</code> — нет.</p>
+    </div>
+
+    <!-- 3. RANDOM.SHARED -->
+    <div class="card">
+        <h2>3. Random.Shared — современный способ</h2>
+        <p>Начиная с .NET 6 есть готовый общий экземпляр:</p>
+        <div class="code-block"><span class="kw">int</span> n = <span class="type">Random</span>.Shared.<span class="fn">Next</span>(<span class="num">1</span>, <span class="num">101</span>);   <span class="cmt">// 1..100</span>
+<span class="kw">double</span> d = <span class="type">Random</span>.Shared.<span class="fn">NextDouble</span>();</div>
+
+        <p style="margin-top:0.75rem;"><strong>Плюсы:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Без объекта</strong><span>не нужно создавать свой объект</span></li>
+            <li><strong>Потокобезопасен</strong><span>(можно использовать из разных потоков)</span></li>
+            <li><strong>Seed</strong><span>внутри использует хороший seed</span></li>
+        </ul>
+
+        <div class="quote-block">
+            <strong>Рекомендация для занятий:</strong> в большинстве учебных задач — <code>Random.Shared</code>. Свой <code>new Random()</code> — когда нужен свой seed для воспроизводимости.
+        </div>
+    </div>
+
+    <!-- 4. SEED -->
+    <div class="card">
+        <h2>4. Seed и воспроизводимость</h2>
+        <div class="code-block"><span class="kw">var</span> rnd1 = <span class="kw">new</span> <span class="type">Random</span>(<span class="num">42</span>);
+<span class="kw">var</span> rnd2 = <span class="kw">new</span> <span class="type">Random</span>(<span class="num">42</span>);
+
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(rnd1.<span class="fn">Next</span>(<span class="num">100</span>)); <span class="cmt">// например, 66</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(rnd2.<span class="fn">Next</span>(<span class="num">100</span>)); <span class="cmt">// тоже 66 — та же последовательность</span></div>
+
+        <p style="margin-top:0.75rem;"><strong>Применение:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Тесты</strong><span>фиксируем seed, получаем стабильный результат</span></li>
+            <li><strong>Отладка</strong><span>воспроизводим баг «иногда падает»</span></li>
+            <li><strong>Демо</strong><span>одинаковый пример на каждом запуске</span></li>
+        </ul>
+
+        <div class="quote-block">
+            <strong>Важно:</strong> два <code>Random</code> с одинаковым seed дадут одинаковую последовательность; с разным — разную. <code>new Random()</code> без параметра — seed из системного времени/энтропии.
+        </div>
+    </div>
+
+    <!-- 5. ДРОБНЫЕ ЧИСЛА -->
+    <div class="card">
+        <h2>5. Дробные числа и диапазоны</h2>
+        <p><code>NextDouble()</code> даёт <code>[0.0, 1.0)</code>. Чтобы получить число в произвольном диапазоне:</p>
+        <div class="code-block"><span class="kw">double</span> min = <span class="num">1.5</span>, max = <span class="num">3.5</span>;
+<span class="kw">double</span> x = min + <span class="type">Random</span>.Shared.<span class="fn">NextDouble</span>() * (max - min); <span class="cmt">// [1.5, 3.5)</span></div>
+
+        <p style="margin-top:0.75rem;">Округление до нужного количества знаков:</p>
+        <div class="code-block"><span class="kw">double</span> rounded = <span class="type">Math</span>.<span class="fn">Round</span>(x, <span class="num">2</span>);</div>
+
+        <p style="margin-top:0.75rem;">Для <code>decimal</code> (например, деньги):</p>
+        <div class="code-block"><span class="kw">decimal</span> price = <span class="type">Math</span>.<span class="fn">Round</span>((<span class="kw">decimal</span>)(<span class="type">Random</span>.Shared.<span class="fn">NextDouble</span>() * <span class="num">1000</span>), <span class="num">2</span>);</div>
+
+        <div class="quote-block">
+            Связать с темой 2: <code>double</code> для измерений, <code>decimal</code> для денег; и с темой 8 — форматирование <code>F2</code>.
+        </div>
+    </div>
+
+    <!-- 6. СЛУЧАЙНЫЙ ЭЛЕМЕНТ -->
+    <div class="card">
+        <h2>6. Случайный элемент коллекции</h2>
+        <div class="code-block"><span class="kw">string</span>[] names = { <span class="str">"Анна"</span>, <span class="str">"Иван"</span>, <span class="str">"Ольга"</span>, <span class="str">"Пётр"</span> };
+<span class="kw">string</span> pick = names[<span class="type">Random</span>.Shared.<span class="fn">Next</span>(names.Length)];</div>
+
+        <p style="margin-top:0.75rem;">Для <code>List&lt;T&gt;</code> — то же через <code>Count</code>:</p>
+        <div class="code-block"><span class="kw">var</span> list = <span class="kw">new</span> <span class="type">List</span>&lt;<span class="kw">int</span>&gt; { <span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span> };
+<span class="kw">int</span> item = list[<span class="type">Random</span>.Shared.<span class="fn">Next</span>(list.Count)];</div>
+
+        <div class="quote-block">
+            <strong>Подчеркнуть:</strong> <code>Next(collection.Length)</code> / <code>Next(collection.Count)</code> — верхняя граница не включается, поэтому берём длину «как есть» (индексы 0…Length-1). Это удобно и безопасно.
+        </div>
+    </div>
+
+    <!-- 7. ПЕРЕМЕШИВАНИЕ -->
+    <div class="card">
+        <h2>7. Перемешивание (shuffle)</h2>
+        <p>Классический алгоритм Фишера–Йетса:</p>
+        <div class="code-block"><span class="kw">static</span> <span class="kw">void</span> <span class="fn">Shuffle</span>&lt;<span class="type">T</span>&gt;(<span class="type">T</span>[] array)
+{
+    <span class="kw">for</span> (<span class="kw">int</span> i = array.Length - <span class="num">1</span>; i &gt; <span class="num">0</span>; i--)
+    {
+        <span class="kw">int</span> j = <span class="type">Random</span>.Shared.<span class="fn">Next</span>(i + <span class="num">1</span>);
+        (array[i], array[j]) = (array[j], array[i]); <span class="cmt">// обмен через кортеж</span>
+    }
+}</div>
+
+        <div class="quote-block">
+            <strong>Почему так, а не «Random.Shared.Next для каждого элемента и сортировка»:</strong> наивный вариант даёт смещённое распределение. Алгоритм Фишера–Йетса — равномерный. На занятии достаточно показать сам код и объяснить идею «идём с конца, меняем с случайным из начала».
+        </div>
+        <p style="margin-top:0.75rem;"><code>(a, b) = (b, a)</code> — обмен через кортеж (C# 7+); если ещё не проходили — обычная временная переменная.</p>
+    </div>
+
+    <!-- 8. ПРАКТИЧЕСКИЕ СЦЕНАРИИ -->
+    <div class="card">
+        <h2>8. Практические сценарии</h2>
+        <ul class="feature-list">
+            <li><strong>Кубик</strong><span><code>Random.Shared.Next(1, 7)</code>.</span></li>
+            <li><strong>Монетка</strong><span><code>Random.Shared.Next(2) == 0 ? "орёл" : "решка"</code>.</span></li>
+        </ul>
+
+        <p style="margin-top:0.75rem;"><strong>Случайный пароль из набора символов:</strong></p>
+        <div class="code-block"><span class="kw">const</span> <span class="kw">string</span> chars = <span class="str">"ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789"</span>;
+<span class="kw">var</span> sb = <span class="kw">new</span> <span class="type">StringBuilder</span>();
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">8</span>; i++)
+    sb.<span class="fn">Append</span>(chars[<span class="type">Random</span>.Shared.<span class="fn">Next</span>(chars.Length)]);
+<span class="kw">string</span> password = sb.<span class="fn">ToString</span>();</div>
+        <p style="margin-top:0.75rem;">Здесь сразу связываются темы 6 (массив/индекс), 8 (<code>StringBuilder</code>) и 10 — хороший «сквозной» пример.</p>
+
+        <ul class="feature-list" style="margin-top:0.75rem;">
+            <li><strong>Тест</strong><span>случайный порядок вопросов в тесте — shuffle массива вопросов.</span></li>
+            <li><strong>Массив</strong><span>заполнение массива случайными числами — цикл + <code>Next(min, max)</code> (задача из темы 6).</span></li>
+        </ul>
+    </div>
+
+    <!-- 9. ТИПИЧНЫЕ ОШИБКИ -->
+    <div class="card">
+        <h2>9. Типичные ошибки и вопросы новичков</h2>
+
+        <p><strong>new Random() внутри цикла — самая частая и коварная ошибка:</strong></p>
+        <div class="code-block"><span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">5</span>; i++)
+{
+    <span class="kw">var</span> r = <span class="kw">new</span> <span class="type">Random</span>();          <span class="cmt">// плохо!</span>
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(r.<span class="fn">Next</span>(<span class="num">100</span>)); <span class="cmt">// часто одинаковые числа</span>
+}</div>
+        <p style="margin-top:0.75rem;"><strong>Причина:</strong> seed берётся из времени, а вызовы идут слишком быстро — seed совпадает. Правильно: создать <code>Random</code> один раз до цикла или использовать <code>Random.Shared</code>.</p>
+
+        <ul class="feature-list" style="margin-top:0.75rem;">
+            <li><strong>Верхняя граница</strong><span>не включается — <code>Next(1, 6)</code> даёт 1…5, а не 1…6.</span></li>
+            <li><strong>Next() без параметров</strong><span>огромный диапазон 0..int.MaxValue-1; почти никогда не нужен.</span></li>
+            <li><strong>«Настоящая случайность»</strong><span>ожидание «настоящей случайности» — это псевдослучайные числа; для криптографии — <code>RandomNumberGenerator</code>.</span></li>
+            <li><strong>Многопоточность</strong><span><code>Random</code> и многопоточность — экземпляр <code>Random</code> не потокобезопасен; использовать <code>Random.Shared</code> или блокировки.</span></li>
+            <li><strong>decimal напрямую</strong><span><code>Random</code> для <code>decimal</code> напрямую — нет метода; конвертировать из <code>NextDouble()</code>.</span></li>
+            <li><strong>Наивное перемешивание</strong><span>перемешивание «наивным» способом — смещённое распределение; нужен Фишер–Йетс.</span></li>
+            <li><strong>Индекс за границей</strong><span>случайный индекс за границей — <code>Next(arr.Length)</code> правильно, <code>Next(arr.Length + 1)</code> — потенциальный выход за границы.</span></li>
+            <li><strong>Тесты</strong><span>сравнение «случайных» результатов в тестах — тест может «мигать»; фиксировать seed.</span></li>
+        </ul>
+    </div>
+
+    <!-- 10. ПРАКТИЧЕСКИЕ ЗАДАНИЯ -->
+    <div class="card">
+        <h2>10. Практические задания</h2>
+        <div class="grid-2">
+            <div>
+                <ul class="feature-list">
+                    <li><strong>1</strong><span>«Кубик»: бросить 100 раз, посчитать частоту каждого значения 1–6, вывести таблицу.</span></li>
+                    <li><strong>2</strong><span>«Угадай число»: программа загадывает 1–100, пользователь угадывает, подсказки «больше/меньше», счётчик попыток (связать с темой 5).</span></li>
+                    <li><strong>3</strong><span>Заполнить массив из 10 элементов случайными числами от −50 до 50, найти min/max/сумму (связать с темой 6).</span></li>
+                    <li><strong>4</strong><span>Случайный выбор элемента из массива имён; вывести «сегодня дежурит: …».</span></li>
+                </ul>
+            </div>
+            <div>
+                <ul class="feature-list">
+                    <li><strong>5</strong><span>Сгенерировать случайный пароль длины 8 из заданного набора символов (темы 6, 8, 10).</span></li>
+                    <li><strong>6</strong><span>Перемешать массив вопросов теста (Фишер–Йетс) и вывести первые 3.</span></li>
+                    <li><strong>7</strong><span>Сгенерировать <code>decimal</code>-цену от 100 до 1000 с двумя знаками после запятой; вывести с <code>{price:F2}</code>.</span></li>
+                    <li><strong>8</strong><span>Показать воспроизводимость: два <code>Random</code> с seed 42 выдают одинаковую последовательность; с 43 — разную.</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 11. ИТОГИ -->
+    <div class="card">
+        <h2>11. Итоги и что дальше</h2>
+        <p><strong>Резюме:</strong> разобрались, что такое псевдослучайные числа и seed, освоили <code>Random</code> и <code>Random.Shared</code>, правило «верхняя граница не включается», генерацию дробных чисел, выбор элемента и перемешивание. Главные навыки — один <code>Random</code> на цикл и правильные границы.</p>
+        <p style="margin-top:0.75rem;"><strong>Домашнее задание:</strong> задания 2, 3, 5, 6.</p>
+
+        <div class="quote-block">
+            <strong>Дальше по плану базового обучения</strong> — обработка исключений и отладка (try/catch/finally, типы исключений, throw, отладчик). Скажите, если нужно — подготовлю эту тему следующей.
+        </div>
+    </div>
+
+    <div class="footer">
+        Консультация 10 — Генерация случайных чисел в C#
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

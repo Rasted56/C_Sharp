@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="12.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Консультация 8 — Строки и форматирование</title>
+</head>
+<body>
+
+<!-- БОКОВАЯ ПАНЕЛЬ -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <h3>C#</h3>
+        <p>Коротко о главном</p>
+    </div>
+    <div class="sidebar-nav">
+        <div class="nav-group">
+            <div class="nav-group-title">Основное</div>
+            <div class="nav-item">
+                <a href="index.html">
+                    <span class="nav-icon">🏠</span>
+                    <span>Главная</span>
+                </a>
+            </div>
+        </div>
+        <div class="nav-group">
+            <div class="nav-group-title">Консультации</div>
+            <div class="nav-item">
+                <a href="1.html"><span class="nav-icon">1</span><span>Консультация 1</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="2.html"><span class="nav-icon">2</span><span>Консультация 2</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="3.html"><span class="nav-icon">3</span><span>Консультация 3</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="4.html"><span class="nav-icon">4</span><span>Консультация 4</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="5.html"><span class="nav-icon">5</span><span>Консультация 5</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="6.html"><span class="nav-icon">6</span><span>Консультация 6</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="7.html"><span class="nav-icon">7</span><span>Консультация 7</span></a>
+            </div>
+            <div class="nav-item active">
+                <a href="8.html"><span class="nav-icon">8</span><span>Консультация 8</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="9.html"><span class="nav-icon">9</span><span>Консультация 9</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="10.html"><span class="nav-icon">10</span><span>Консультация 10</span></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">
+    ☰ Меню
+</div>
+
+<!-- ОСНОВНОЙ КОНТЕНТ -->
+<div class="main-content">
+
+    <div class="page-header">
+        <h1>Консультация 8. Строки и форматирование</h1>
+        <p class="subtitle">Неизменяемость string, методы строк, StringBuilder, форматирование и культура</p>
+    </div>
+
+    <!-- ЦЕЛИ -->
+    <div class="card">
+        <h2>Цели консультации</h2>
+        <p>К концу занятия слушатель должен:</p>
+        <ul class="feature-list">
+            <li><strong>Понимать</strong><span>что <code>string</code> — ссылочный и неизменяемый тип, и какие последствия это имеет</span></li>
+            <li><strong>Уметь</strong><span>уверенно пользоваться основными методами <code>string</code> (<code>Length</code>, <code>Substring</code>, <code>Split</code>, <code>Replace</code>, <code>Trim</code>, <code>Contains</code>, <code>StartsWith</code>/<code>EndsWith</code>, <code>IndexOf</code>, <code>ToUpper</code>/<code>ToLower</code>)</span></li>
+            <li><strong>Знать</strong><span>когда нужен <code>StringBuilder</code> и почему конкатенация в цикле — плохая идея</span></li>
+            <li><strong>Уметь</strong><span>форматировать значения: интерполяция, <code>string.Format</code>, спецификаторы (<code>F2</code>, <code>D3</code>, <code>P</code>, <code>C</code>, <code>dd.MM.yyyy</code>)</span></li>
+            <li><strong>Понимать</strong><span>роль культуры (<code>CultureInfo</code>) и уметь сравнивать строки корректно (<code>StringComparison</code>)</span></li>
+        </ul>
+    </div>
+
+    <!-- 1. СТРОКА — ССЫЛОЧНЫЙ И НЕИЗМЕНЯЕМЫЙ ТИП -->
+    <div class="card">
+        <h2>1. Строка — ссылочный и неизменяемый тип</h2>
+        <p><code>string</code> — ссылочный тип (тема 2), но с важной особенностью: <strong>неизменяемый</strong> (<em>immutable</em>). Любая «модификация» создаёт новую строку, а исходная остаётся прежней.</p>
+
+        <div class="code-block"><span class="kw">string</span> s = <span class="str">"hello"</span>;
+<span class="kw">string</span> t = s.<span class="fn">ToUpper</span>();
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(s); <span class="cmt">// hello — не изменилось</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(t); <span class="cmt">// HELLO — новая строка</span></div>
+
+        <p style="margin-top:0.75rem;"><strong>Что это значит на практике:</strong></p>
+        <ul class="feature-list">
+            <li><strong>s += "!"</strong><span>в цикле на каждой итерации создаёт новую строку и копирует старую → квадратичная сложность и лишние аллокации</span></li>
+            <li><strong>Раздача</strong><span>строки можно безопасно «раздавать» — их никто не изменит</span></li>
+            <li><strong>StringBuilder</strong><span>для сборки длинных строк из кусков есть <code>StringBuilder</code> (раздел 5)</span></li>
+        </ul>
+
+        <div class="quote-block">
+            Также стоит проговорить <strong>интернирование</strong> (на уровне «строковые литералы переиспользуются»), но без углубления — достаточно знать, что <code>==</code> для строк сравнивает содержимое, а не ссылки.
+        </div>
+    </div>
+
+    <!-- 2. СОЗДАНИЕ СТРОК -->
+    <div class="card">
+        <h2>2. Создание строк и основные свойства</h2>
+        <div class="code-block"><span class="kw">string</span> a = <span class="str">"текст"</span>;                     <span class="cmt">// литерал</span>
+<span class="kw">string</span> b = <span class="kw">new</span> <span class="kw">string</span>(<span class="str">'x'</span>, <span class="num">5</span>);          <span class="cmt">// "xxxxx"</span>
+<span class="kw">string</span> c = <span class="kw">new</span> <span class="kw">string</span>(<span class="kw">new</span>[] { <span class="str">'a'</span>, <span class="str">'b'</span> }); <span class="cmt">// "ab"</span>
+<span class="kw">string</span> empty = <span class="kw">string</span>.Empty;            <span class="cmt">// "" — предпочтительнее, чем ""</span>
+<span class="kw">string</span>? maybeNull = <span class="kw">null</span>;               <span class="cmt">// null допустим</span></div>
+
+        <p style="margin-top:0.75rem;"><strong>Основное:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Length</strong><span>количество символов (не байт!); для <code>null</code> обращение к <code>Length</code> даёт <code>NullReferenceException</code></span></li>
+            <li><strong>s[i]</strong><span>доступ к символу по индексу (только чтение — строку нельзя изменить по индексу)</span></li>
+            <li><strong>s[^1]</strong><span>последний символ (C# 8+), как у массивов</span></li>
+        </ul>
+
+        <p style="margin-top:0.75rem;"><strong>Проверка на пустоту/null — практический паттерн:</strong></p>
+        <div class="code-block"><span class="kw">if</span> (<span class="kw">string</span>.<span class="fn">IsNullOrEmpty</span>(s)) { ... }      <span class="cmt">// null или ""</span>
+<span class="kw">if</span> (<span class="kw">string</span>.<span class="fn">IsNullOrWhiteSpace</span>(s)) { ... } <span class="cmt">// null, "" или только пробелы</span></div>
+        <p style="margin-top:0.75rem;">Это стоит показать сразу — используется постоянно.</p>
+    </div>
+
+    <!-- 3. ОСНОВНЫЕ МЕТОДЫ STRING -->
+    <div class="card">
+        <h2>3. Основные методы string</h2>
+
+        <h3>Поиск и проверки</h3>
+        <div class="code-block">s.<span class="fn">Contains</span>(<span class="str">"abc"</span>)           <span class="cmt">// есть ли подстрока</span>
+s.<span class="fn">StartsWith</span>(<span class="str">"ab"</span>)          <span class="cmt">// начинается с</span>
+s.<span class="fn">EndsWith</span>(<span class="str">"bc"</span>)            <span class="cmt">// заканчивается на</span>
+s.<span class="fn">IndexOf</span>(<span class="str">"b"</span>)              <span class="cmt">// индекс первого вхождения (-1, если нет)</span>
+s.<span class="fn">LastIndexOf</span>(<span class="str">"b"</span>)          <span class="cmt">// индекс последнего вхождения</span></div>
+
+        <h3 style="margin-top:1.25rem;">Извлечение и замена</h3>
+        <div class="code-block">s.<span class="fn">Substring</span>(<span class="num">2</span>)              <span class="cmt">// с индекса 2 до конца</span>
+s.<span class="fn">Substring</span>(<span class="num">2</span>, <span class="num">3</span>)           <span class="cmt">// 3 символа с индекса 2</span>
+s.<span class="fn">Replace</span>(<span class="str">"a"</span>, <span class="str">"b"</span>)         <span class="cmt">// заменить все вхождения</span>
+s.<span class="fn">Remove</span>(<span class="num">2</span>)                 <span class="cmt">// удалить с индекса 2 до конца</span>
+s.<span class="fn">Insert</span>(<span class="num">2</span>, <span class="str">"XY"</span>)           <span class="cmt">// вставить в позицию 2</span></div>
+
+        <h3 style="margin-top:1.25rem;">Обрезка и регистр</h3>
+        <div class="code-block">s.<span class="fn">Trim</span>()                    <span class="cmt">// убрать пробелы с обеих сторон</span>
+s.<span class="fn">TrimStart</span>() / s.<span class="fn">TrimEnd</span>()
+s.<span class="fn">Trim</span>(<span class="str">'*'</span>)                 <span class="cmt">// убрать конкретные символы</span>
+s.<span class="fn">ToUpper</span>() / s.<span class="fn">ToLower</span>()</div>
+
+        <h3 style="margin-top:1.25rem;">Разбиение и объединение</h3>
+        <div class="code-block"><span class="str">"a,b,c"</span>.<span class="fn">Split</span>(<span class="str">','</span>)          <span class="cmt">// ["a","b","c"]</span>
+<span class="str">"a b  c"</span>.<span class="fn">Split</span>(<span class="str">' '</span>, <span class="type">StringSplitOptions</span>.RemoveEmptyEntries)
+<span class="kw">string</span>.<span class="fn">Join</span>(<span class="str">", "</span>, <span class="kw">new</span>[] { <span class="str">"a"</span>, <span class="str">"b"</span>, <span class="str">"c"</span> }) <span class="cmt">// "a, b, c"</span></div>
+
+        <div class="quote-block">
+            <strong>Важно подчеркнуть:</strong> все эти методы возвращают новую строку, исходная не меняется. <code>Replace</code>, <code>Trim</code> и т. п. не «модифицируют на месте».
+        </div>
+        <p style="margin-top:0.75rem;"><code>Split</code> — рабочая лошадка для разбора ввода; <code>RemoveEmptyEntries</code> спасает от пустых элементов при повторных разделителях — частая практическая деталь.</p>
+    </div>
+
+    <!-- 4. СРАВНЕНИЕ СТРОК -->
+    <div class="card">
+        <h2>4. Сравнение строк</h2>
+        <p><strong>Ключевое:</strong></p>
+        <ul class="feature-list">
+            <li><strong>== и !=</strong><span>для <code>string</code> сравнивают содержимое (перегружены)</span></li>
+            <li><strong>Культура</strong><span>но по умолчанию — с учётом культуры и регистра, что даёт сюрпризы в некоторых языках</span></li>
+            <li><strong>StringComparison</strong><span>для предсказуемого поведения используйте <code>string.Equals</code> с явным <code>StringComparison</code></span></li>
+        </ul>
+
+        <div class="code-block" style="margin-top:1rem;"><span class="kw">string</span> a = <span class="str">"Admin"</span>;
+<span class="kw">string</span> b = <span class="str">"admin"</span>;
+
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(a == b);                                  <span class="cmt">// false (регистр)</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(a.<span class="fn">Equals</span>(b, <span class="type">StringComparison</span>.OrdinalIgnoreCase)); <span class="cmt">// true</span></div>
+
+        <div class="quote-block">
+            <strong>Рекомендация:</strong> для сравнения «как есть» — <code>StringComparison.Ordinal</code>; без учёта регистра — <code>OrdinalIgnoreCase</code>. Для пользовательских данных (сортировка имён) — <code>CurrentCulture</code>. На базовом уровне достаточно <code>Ordinal</code>/<code>OrdinalIgnoreCase</code>, но знать про культуру — важно.
+        </div>
+        <p style="margin-top:0.75rem;"><code>CompareTo</code>/<code>string.Compare</code> — для сортировки; упомянуть, не углубляться.</p>
+    </div>
+
+    <!-- 5. STRINGBUILDER -->
+    <div class="card">
+        <h2>5. StringBuilder — когда строк много</h2>
+        <p>Если строку нужно собрать из многих кусков (цикл, построчная сборка), конкатенация через <code>+</code>/<code>+=</code> создаёт новую строку на каждом шаге. Для этого есть <code>StringBuilder</code>:</p>
+
+        <div class="code-block"><span class="kw">using</span> <span class="type">System.Text</span>;
+
+<span class="kw">var</span> sb = <span class="kw">new</span> <span class="type">StringBuilder</span>();
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= <span class="num">5</span>; i++)
+{
+    sb.<span class="fn">Append</span>(i).<span class="fn">Append</span>(<span class="str">' '</span>);
+}
+sb.<span class="fn">AppendLine</span>(<span class="str">"готово"</span>);
+<span class="kw">string</span> result = sb.<span class="fn">ToString</span>(); <span class="cmt">// "1 2 3 4 5 готово"</span></div>
+
+        <p style="margin-top:0.75rem;"><strong>Основные методы:</strong> <code>Append</code>, <code>AppendLine</code>, <code>Insert</code>, <code>Remove</code>, <code>Replace</code>, <code>Clear</code>, <code>ToString</code>. <code>StringBuilder</code> изменяемый — операции меняют его внутренний буфер, а не создают новый объект.</p>
+
+        <div class="quote-block">
+            <strong>Практическое правило для слушателей:</strong><br>
+            1–3 конкатенации — <code>+</code> или интерполяция, читается лучше;<br>
+            сборка в цикле / десятки кусков — <code>StringBuilder</code>.
+        </div>
+    </div>
+
+    <!-- 6. ФОРМАТИРОВАНИЕ ЗНАЧЕНИЙ -->
+    <div class="card">
+        <h2>6. Форматирование значений</h2>
+        <p><strong>Интерполяция (основной способ):</strong></p>
+        <div class="code-block"><span class="kw">int</span> age = <span class="num">25</span>;
+<span class="kw">double</span> price = <span class="num">1234.5</span>;
+<span class="type">DateTime</span> date = <span class="kw">new</span> <span class="type">DateTime</span>(<span class="num">2026</span>, <span class="num">10</span>, <span class="num">19</span>);
+
+<span class="type">Console</span>.<span class="fn">WriteLine</span>($<span class="str">"Возраст: {age}"</span>);
+<span class="type">Console</span>.<span class="fn">WriteLine</span>($<span class="str">"Цена: {price:F2}"</span>);          <span class="cmt">// 1234,50</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>($<span class="str">"Дата: {date:dd.MM.yyyy}"</span>);   <span class="cmt">// 19.10.2026</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>($<span class="str">"Код: {age:D3}"</span>);             <span class="cmt">// 025</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>($<span class="str">"Доля: {0.256:P1}"</span>);          <span class="cmt">// 25,6 %</span></div>
+
+        <p style="margin-top:0.75rem;"><strong>Спецификаторы, которые стоит знать:</strong></p>
+        <ul class="feature-list">
+            <li><strong>F2</strong><span>фиксированная точность (2 знака)</span></li>
+            <li><strong>D3</strong><span>целое с ведущими нулями</span></li>
+            <li><strong>P1</strong><span>проценты</span></li>
+            <li><strong>C</strong><span>валюта (зависит от культуры)</span></li>
+            <li><strong>E</strong><span>экспонента</span></li>
+            <li><strong>N</strong><span>с разделителями разрядов</span></li>
+            <li><strong>X</strong><span>шестнадцатеричное</span></li>
+            <li><strong>DateTime</strong><span><code>dd.MM.yyyy</code>, <code>HH:mm:ss</code>, <code>yyyy-MM-dd</code></span></li>
+        </ul>
+
+        <p style="margin-top:0.75rem;"><code>string.Format</code> — старый, но встречается в чужом коде:</p>
+        <div class="code-block"><span class="kw">string</span> s = <span class="kw">string</span>.<span class="fn">Format</span>(<span class="str">"Цена: {0:F2}, дата: {1:dd.MM.yyyy}"</span>, price, date);</div>
+
+        <div class="quote-block">
+            <strong>Выравнивание</strong> — в интерполяции и Format: <code>{price,10:F2}</code> (ширина 10, по правому краю), <code>{name,-10}</code> (по левому). Пригодится для таблиц (например, таблица умножения из темы 5).
+        </div>
+    </div>
+
+    <!-- 7. КУЛЬТУРА -->
+    <div class="card">
+        <h2>7. Культура и разделители</h2>
+        <p>Одна из самых коварных тем для новичков: разделитель дробной части зависит от культуры. В русской локали — <code>,</code>, в инвариантной — <code>.</code></p>
+
+        <div class="code-block"><span class="kw">using</span> <span class="type">System.Globalization</span>;
+
+<span class="kw">double</span> d = <span class="num">3.14</span>;
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(d.<span class="fn">ToString</span>());                                  <span class="cmt">// 3,14 (ru-RU)</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(d.<span class="fn">ToString</span>(<span class="type">CultureInfo</span>.InvariantCulture));      <span class="cmt">// 3.14</span></div>
+
+        <p style="margin-top:0.75rem;"><strong>Проблемы, которые это вызывает:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Parse</strong><span><code>double.Parse("3.14")</code> в русской локали может дать 314 или исключение — зависит от культуры</span></li>
+            <li><strong>Файлы/БД/JSON</strong><span>сохранение чисел в файл/БД/JSON и обратное чтение должно быть в <code>InvariantCulture</code></span></li>
+            <li><strong>Пользователь</strong><span>форматирование для пользователя — наоборот, в его культуре</span></li>
+        </ul>
+
+        <div class="quote-block">
+            <strong>Практические правила:</strong><br>
+            для ввода/вывода чисел в файлах, API, конфигах — <code>CultureInfo.InvariantCulture</code> (или <code>TryParse</code> с явной культурой);<br>
+            для показа пользователю — <code>CurrentCulture</code> (по умолчанию);<br>
+            <code>decimal</code> для денег, <code>double</code> для измерений — напоминание из темы 2.
+        </div>
+    </div>
+
+    <!-- 8. ПОЛЕЗНЫЕ МЕЛОЧИ -->
+    <div class="card">
+        <h2>8. Полезные мелочи</h2>
+        <ul class="feature-list">
+            <li><strong>string.Concat, string.Join</strong><span>быстрее и чище, чем ручная конкатенация.</span></li>
+            <li><strong>string.IsNullOrWhiteSpace</strong><span>почти всегда то, что нужно для проверки пользовательского ввода.</span></li>
+            <li><strong>s.Split с StringSplitOptions</strong><span><code>RemoveEmptyEntries</code> и <code>TrimEntries</code> (C# 8+).</span></li>
+            <li><strong>s.ToCharArray()</strong><span>когда нужен посимвольный разбор.</span></li>
+            <li><strong>char.IsDigit, char.IsLetter, char.IsWhiteSpace</strong><span>для проверки символов.</span></li>
+            <li><strong>Интерполяция с выражениями</strong><span><code>$"{(a &gt; b ? a : b)}"</code> — работает, но не увлекаться.</span></li>
+            <li><strong>Многострочные строки</strong><span>verbatim <code>@"..."</code> (без экранирования), raw string literals <code>"""..."""</code> (C# 11+) — показать, что есть.</span></li>
+        </ul>
+    </div>
+
+    <!-- 9. ПРАКТИЧЕСКИЕ ЗАДАНИЯ -->
+    <div class="card">
+        <h2>9. Практические задания</h2>
+        <div class="grid-2">
+            <div>
+                <ul class="feature-list">
+                    <li><strong>1</strong><span>Ввести строку, вывести её длину, первый и последний символ, в верхнем и нижнем регистре.</span></li>
+                    <li><strong>2</strong><span>Проверить, является ли строка палиндромом (сравнить с перевёрнутой, без учёта регистра и пробелов).</span></li>
+                    <li><strong>3</strong><span>Посчитать количество слов в предложении (<code>Split</code> + <code>RemoveEmptyEntries</code>).</span></li>
+                    <li><strong>4</strong><span>Заменить в строке все вхождения одного слова на другое (учесть, что <code>Replace</code> меняет все вхождения).</span></li>
+                    <li><strong>5</strong><span>Обрезать пробелы и привести к нижнему регистру email-адрес; проверить, содержит ли он <code>@</code> и <code>.</code>.</span></li>
+                </ul>
+            </div>
+            <div>
+                <ul class="feature-list">
+                    <li><strong>6</strong><span>Разобрать строку вида <code>"Иван;25;Москва"</code> через <code>Split(';')</code> и вывести поля по отдельности с подписями.</span></li>
+                    <li><strong>7</strong><span>Собрать через <code>StringBuilder</code> строку <code>"1, 2, 3, ..., 100"</code>; сравнить с вариантом через <code>+=</code> в цикле (обсудить разницу).</span></li>
+                    <li><strong>8</strong><span>Вывести таблицу товаров (название, цена) с выравниванием и форматированием <code>{name,-15} {price,10:F2}</code>.</span></li>
+                    <li><strong>9</strong><span>Распарсить <code>"3.14"</code> и <code>"3,14"</code> с <code>InvariantCulture</code> и <code>CurrentCulture</code>; объяснить разницу.</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10. ТИПИЧНЫЕ ОШИБКИ -->
+    <div class="card">
+        <h2>10. Типичные ошибки и вопросы новичков</h2>
+        <ul class="feature-list">
+            <li><strong>NullReferenceException</strong><span>на <code>s.Length</code> — не проверили <code>null</code>; использовать <code>IsNullOrEmpty</code>/<code>IsNullOrWhiteSpace</code>.</span></li>
+            <li><strong>Replace/Trim</strong><span>ожидание, что <code>Replace</code>/<code>Trim</code> изменят строку — они возвращают новую; нужно присвоить: <code>s = s.Trim();</code>.</span></li>
+            <li><strong>s[0] = 'X'</strong><span>строку нельзя менять по индексу; ошибка компиляции.</span></li>
+            <li><strong>Конкатенация в цикле</strong><span>квадратичная сложность; нужен <code>StringBuilder</code>.</span></li>
+            <li><strong>Split с пустыми</strong><span>элементами — удивление от <code>"a,,b".Split(',')</code>; объяснить <code>RemoveEmptyEntries</code>.</span></li>
+            <li><strong>ToLower для сравнения</strong><span>сравнение без учёта регистра через <code>ToLower()</code> — работает, но лучше <code>StringComparison.OrdinalIgnoreCase</code>.</span></li>
+            <li><strong>== для строк</strong><span>«всегда работает» — да, для содержимого, но культура и регистр — источник сюрпризов.</span></li>
+            <li><strong>double.Parse без культуры</strong><span>падает или даёт неверный результат в разных локалях; использовать <code>InvariantCulture</code>.</span></li>
+            <li><strong>Substring за границами</strong><span><code>ArgumentOutOfRangeException</code>; проверять длину.</span></li>
+            <li><strong>Length — символы</strong><span>не байты — для кириллицы/эмодзи длина в символах ≠ длине в байтах; для эмодзи есть суррогатные пары (не углубляться, но упомянуть).</span></li>
+            <li><strong>ToString() для null</strong><span>для <code>string?</code> даёт <code>""</code>? Нет, <code>null.ToString()</code> — падение; для интерполяции <code>null</code> выводится как пустая строка, но прямое обращение — нет.</span></li>
+        </ul>
+    </div>
+
+    <!-- 11. ИТОГИ -->
+    <div class="card">
+        <h2>11. Итоги и что дальше</h2>
+        <p><strong>Вывод:</strong> разобрались, что <code>string</code> неизменяемый, освоили основные методы, научились собирать длинные строки через <code>StringBuilder</code>, форматировать значения и учитывать культуру при разборе/выводе чисел и дат. Главные навыки — не «терять» результат методов (присваивать) и корректно сравнивать строки.</p>
+
+        <div class="quote-block">
+            <strong>Следующая консультация</strong> — основы ООП: классы, объекты, поля, свойства, методы, конструкторы.
+        </div>
+    </div>
+
+    <div class="footer">
+        Консультация 8 — Строки и форматирование
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+</html>

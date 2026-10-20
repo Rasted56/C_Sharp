@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="12.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Консультация 7 — Методы и параметры</title>
+</head>
+<body>
+
+<!-- БОКОВАЯ ПАНЕЛЬ -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <h3>C#</h3>
+        <p>Коротко о главном</p>
+    </div>
+    <div class="sidebar-nav">
+        <div class="nav-group">
+            <div class="nav-group-title">Основное</div>
+            <div class="nav-item">
+                <a href="index.html">
+                    <span class="nav-icon">🏠</span>
+                    <span>Главная</span>
+                </a>
+            </div>
+        </div>
+        <div class="nav-group">
+            <div class="nav-group-title">Консультации</div>
+            <div class="nav-item">
+                <a href="1.html"><span class="nav-icon">1</span><span>Консультация 1</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="2.html"><span class="nav-icon">2</span><span>Консультация 2</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="3.html"><span class="nav-icon">3</span><span>Консультация 3</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="4.html"><span class="nav-icon">4</span><span>Консультация 4</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="5.html"><span class="nav-icon">5</span><span>Консультация 5</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="6.html"><span class="nav-icon">6</span><span>Консультация 6</span></a>
+            </div>
+            <div class="nav-item active">
+                <a href="7.html"><span class="nav-icon">7</span><span>Консультация 7</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="8.html"><span class="nav-icon">8</span><span>Консультация 8</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="9.html"><span class="nav-icon">9</span><span>Консультация 9</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="10.html"><span class="nav-icon">10</span><span>Консультация 10</span></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">
+    ☰ Меню
+</div>
+
+<!-- ОСНОВНОЙ КОНТЕНТ -->
+<div class="main-content">
+
+    <div class="page-header">
+        <h1>Консультация 7. Методы и параметры</h1>
+        <p class="subtitle">Объявление и вызов методов, void, ref/out, params, необязательные аргументы, перегрузка, рекурсия</p>
+    </div>
+
+    <!-- ЦЕЛИ -->
+    <div class="card">
+        <h2>Цели консультации</h2>
+        <p>К концу занятия слушатель должен:</p>
+        <ul class="feature-list">
+            <li><strong>Понимать</strong><span>зачем нужны методы и что такое «декомпозиция»</span></li>
+            <li><strong>Уметь</strong><span>объявлять и вызывать методы, возвращать значения, использовать <code>void</code></span></li>
+            <li><strong>Различать</strong><span>параметры по значению и по ссылке (<code>ref</code>, <code>out</code>), понимать <code>params</code></span></li>
+            <li><strong>Понимать</strong><span>перегрузку методов и правила её разрешения</span></li>
+            <li><strong>Знать</strong><span>области видимости и время жизни переменных</span></li>
+            <li><strong>Иметь представление</strong><span>о рекурсии и уметь написать простой рекурсивный метод</span></li>
+        </ul>
+    </div>
+
+    <!-- 1. ЗАЧЕМ НУЖНЫ МЕТОДЫ -->
+    <div class="card">
+        <h2>1. Зачем нужны методы</h2>
+        <p><strong>Метод</strong> — именованный блок кода, который можно вызывать многократно и который решает одну задачу. Причины использовать методы:</p>
+        <ul class="feature-list">
+            <li><strong>DRY</strong><span>устранение дублирования</span></li>
+            <li><strong>Читаемость</strong><span><code>CalculateTotal(items)</code> понятнее, чем 20 строк внутри <code>Main</code></span></li>
+            <li><strong>Декомпозиция</strong><span>большая задача разбивается на маленькие</span></li>
+            <li><strong>Тестируемость</strong><span>метод с чёткими входами/выходами легко проверить</span></li>
+            <li><strong>Повторное использование</strong><span>в том числе в других проектах</span></li>
+        </ul>
+
+        <div class="quote-block">
+            <strong>Правило, которое стоит проговорить:</strong> метод должен делать одну вещь и иметь понятное имя (глагол: <code>Calculate</code>, <code>Print</code>, <code>Find</code>). Если метод не помещается на экран или в нём несколько «этапов» — скорее всего, его пора разбить.
+        </div>
+    </div>
+
+    <!-- 2. ОБЪЯВЛЕНИЕ И ВЫЗОВ -->
+    <div class="card">
+        <h2>2. Объявление и вызов</h2>
+        <p>Общий вид:</p>
+        <div class="code-block">[модификатор] возвращаемыйТип Имя(параметры)
+{
+    <span class="cmt">// тело</span>
+    <span class="kw">return</span> значение; <span class="cmt">// если тип не void</span>
+}</div>
+
+        <p style="margin-top:0.75rem;">Простой пример:</p>
+        <div class="code-block"><span class="kw">static</span> <span class="kw">int</span> <span class="fn">Add</span>(<span class="kw">int</span> a, <span class="kw">int</span> b)
+{
+    <span class="kw">return</span> a + b;
+}
+
+<span class="cmt">// вызов</span>
+<span class="kw">int</span> sum = <span class="fn">Add</span>(<span class="num">2</span>, <span class="num">3</span>);   <span class="cmt">// 5</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="fn">Add</span>(<span class="num">10</span>, <span class="num">20</span>));</div>
+
+        <p style="margin-top:0.75rem;"><strong>Разбор:</strong></p>
+        <ul class="feature-list">
+            <li><strong>static</strong><span>метод принадлежит классу, а не объекту (на базовом уровне все методы в <code>Program</code> — <code>static</code>; подробно про <code>static</code>/instance — на теме ООП)</span></li>
+            <li><strong>int</strong><span>возвращаемый тип</span></li>
+            <li><strong>Add</strong><span>имя (PascalCase)</span></li>
+            <li><strong>(int a, int b)</strong><span>параметры: тип + имя</span></li>
+            <li><strong>return</strong><span>возвращает значение и завершает метод</span></li>
+        </ul>
+
+        <p style="margin-top:0.75rem;">Вызов: имя + аргументы в скобках. Аргументы должны соответствовать параметрам по типу, количеству и (обычно) порядку. Количество и типы проверяет компилятор — это одна из сильных сторон C#.</p>
+    </div>
+
+    <!-- 3. VOID -->
+    <div class="card">
+        <h2>3. void — метод без возвращаемого значения</h2>
+        <div class="code-block"><span class="kw">static</span> <span class="kw">void</span> <span class="fn">PrintGreeting</span>(<span class="kw">string</span> name)
+{
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>($<span class="str">"Привет, {name}!"</span>);
+}
+
+<span class="fn">PrintGreeting</span>(<span class="str">"Анна"</span>);</div>
+
+        <p style="margin-top:0.75rem;"><strong>Особенности:</strong></p>
+        <ul class="feature-list">
+            <li><strong>return</strong><span>можно использовать для досрочного выхода, но без значения: <code>if (name == null) return;</code></span></li>
+            <li><strong>Выражение</strong><span>void-метод нельзя использовать в выражении (<code>int x = PrintGreeting(...)</code> — ошибка)</span></li>
+            <li><strong>Стиль</strong><span>если метод «ничего не возвращает, но что-то делает» (печатает, сохраняет) — это нормально; но методы, которые и считают, и печатают, — плохой стиль (смешение ответственности)</span></li>
+        </ul>
+    </div>
+
+    <!-- 4. ПАРАМЕТРЫ ПО ЗНАЧЕНИЮ -->
+    <div class="card">
+        <h2>4. Параметры и аргументы: по значению</h2>
+        <p>По умолчанию параметры передаются <strong>по значению</strong> — в метод попадает копия:</p>
+        <div class="code-block"><span class="kw">static</span> <span class="kw">void</span> <span class="fn">TryChange</span>(<span class="kw">int</span> x)
+{
+    x = <span class="num">100</span>;           <span class="cmt">// меняем копию</span>
+}
+
+<span class="kw">int</span> a = <span class="num">5</span>;
+<span class="fn">TryChange</span>(a);
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(a);  <span class="cmt">// 5 — оригинал не изменился</span></div>
+
+        <p style="margin-top:0.75rem;">Для значимых типов (тема 2) — копируется значение; для ссылочных — копируется ссылка, поэтому изменения внутри объекта видны снаружи, а переприсваивание ссылки — нет:</p>
+        <div class="code-block"><span class="kw">static</span> <span class="kw">void</span> <span class="fn">FillArray</span>(<span class="kw">int</span>[] arr)
+{
+    arr[<span class="num">0</span>] = <span class="num">999</span>;      <span class="cmt">// меняем содержимое — видно снаружи</span>
+    arr = <span class="kw">new</span> <span class="kw">int</span>[<span class="num">10</span>]; <span class="cmt">// переприсваивание ссылки — не видно</span>
+}
+
+<span class="kw">int</span>[] data = { <span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span> };
+<span class="fn">FillArray</span>(data);
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(data[<span class="num">0</span>]); <span class="cmt">// 999</span></div>
+
+        <div class="quote-block">
+            Это ключевой момент темы — стоит показать оба случая.
+        </div>
+    </div>
+
+    <!-- 5. REF И OUT -->
+    <div class="card">
+        <h2>5. ref и out — передача по ссылке</h2>
+        <p>Когда нужно, чтобы метод изменил переменную вызывающего кода, используют <code>ref</code> или <code>out</code>.</p>
+
+        <h3>ref — переменная должна быть инициализирована до вызова, метод может читать и писать</h3>
+        <div class="code-block"><span class="kw">static</span> <span class="kw">void</span> <span class="fn">Increment</span>(<span class="kw">ref</span> <span class="kw">int</span> x)
+{
+    x++;
+}
+
+<span class="kw">int</span> n = <span class="num">5</span>;
+<span class="fn">Increment</span>(<span class="kw">ref</span> n);
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(n);   <span class="cmt">// 6</span></div>
+
+        <h3 style="margin-top:1.25rem;">out — переменная не обязана быть инициализирована до вызова, но метод обязан присвоить ей значение до возврата</h3>
+        <div class="code-block"><span class="kw">static</span> <span class="kw">bool</span> <span class="fn">TryDivide</span>(<span class="kw">int</span> a, <span class="kw">int</span> b, <span class="kw">out</span> <span class="kw">int</span> result)
+{
+    <span class="kw">if</span> (b == <span class="num">0</span>)
+    {
+        result = <span class="num">0</span>;
+        <span class="kw">return</span> <span class="kw">false</span>;
+    }
+    result = a / b;
+    <span class="kw">return</span> <span class="kw">true</span>;
+}
+
+<span class="kw">if</span> (<span class="fn">TryDivide</span>(<span class="num">10</span>, <span class="num">2</span>, <span class="kw">out</span> <span class="kw">int</span> res))
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(res);   <span class="cmt">// 5</span></div>
+
+        <div class="quote-block">
+            <strong>Связь с предыдущими темами:</strong> <code>int.TryParse</code> — тот же паттерн «bool + out», который мы уже использовали в темах 2 и 5. Теперь видно, как он устроен «изнутри» — хороший момент для «ага-эффекта».
+        </div>
+
+        <p style="margin-top:0.75rem;"><strong>Правила:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Указание</strong><span><code>ref</code>/<code>out</code> указываются и при объявлении, и при вызове (<code>Increment(ref n)</code>, <code>TryDivide(..., out int res)</code>)</span></li>
+            <li><strong>Объявление в вызове</strong><span><code>out</code>-параметр можно объявить прямо в вызове (<code>out int res</code>) — C# 7+</span></li>
+            <li><strong>Читаемость</strong><span><code>ref</code>/<code>out</code> — мощный инструмент, но злоупотребление ухудшает читаемость; если метод возвращает несколько значений, часто лучше вернуть кортеж (<code>(int min, int max)</code>) (упомянуть, не углубляться)</span></li>
+        </ul>
+    </div>
+
+    <!-- 6. PARAMS -->
+    <div class="card">
+        <h2>6. params — переменное число аргументов</h2>
+        <p>Позволяет передать произвольное количество аргументов одного типа:</p>
+        <div class="code-block"><span class="kw">static</span> <span class="kw">int</span> <span class="fn">Sum</span>(<span class="kw">params</span> <span class="kw">int</span>[] numbers)
+{
+    <span class="kw">int</span> total = <span class="num">0</span>;
+    <span class="kw">foreach</span> (<span class="kw">int</span> n <span class="kw">in</span> numbers) total += n;
+    <span class="kw">return</span> total;
+}
+
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="fn">Sum</span>(<span class="num">1</span>, <span class="num">2</span>));          <span class="cmt">// 3</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="fn">Sum</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>)); <span class="cmt">// 15</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="fn">Sum</span>());              <span class="cmt">// 0</span></div>
+
+        <p style="margin-top:0.75rem;"><strong>Правила:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Позиция</strong><span><code>params</code> — только последний параметр</span></li>
+            <li><strong>Внутри</strong><span>обычный массив</span></li>
+            <li><strong>Массив</strong><span>можно передать и готовый массив: <code>Sum(new[] { 1, 2, 3 })</code></span></li>
+        </ul>
+    </div>
+
+    <!-- 7. НЕОБЯЗАТЕЛЬНЫЕ ПАРАМЕТРЫ -->
+    <div class="card">
+        <h2>7. Необязательные параметры и именованные аргументы</h2>
+        <p>Параметры по умолчанию (необязательные) — задаются в объявлении:</p>
+        <div class="code-block"><span class="kw">static</span> <span class="kw">void</span> <span class="fn">Print</span>(<span class="kw">string</span> text, <span class="kw">bool</span> upper = <span class="kw">false</span>)
+{
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(upper ? text.<span class="fn">ToUpper</span>() : text);
+}
+
+<span class="fn">Print</span>(<span class="str">"привет"</span>);          <span class="cmt">// привет</span>
+<span class="fn">Print</span>(<span class="str">"привет"</span>, <span class="kw">true</span>);    <span class="cmt">// ПРИВЕТ</span>
+<span class="fn">Print</span>(<span class="str">"привет"</span>, upper: <span class="kw">true</span>); <span class="cmt">// именованный аргумент</span></div>
+
+        <p style="margin-top:0.75rem;"><strong>Правила:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Порядок</strong><span>необязательные параметры идут после обязательных</span></li>
+            <li><strong>Значения</strong><span>по умолчанию — константы (или <code>default</code>)</span></li>
+            <li><strong>Именованные</strong><span>аргументы позволяют передавать в любом порядке и повышают читаемость при многих параметрах: <code>CreateUser(name: "Анна", age: 25)</code></span></li>
+        </ul>
+    </div>
+
+    <!-- 8. ПЕРЕГРУЗКА -->
+    <div class="card">
+        <h2>8. Перегрузка методов</h2>
+        <p><strong>Перегрузка</strong> (<em>overload</em>) — несколько методов с одним именем, но разными сигнатурами (типами/количеством параметров):</p>
+        <div class="code-block"><span class="kw">static</span> <span class="kw">int</span> <span class="fn">Max</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) =&gt; a &gt; b ? a : b;
+<span class="kw">static</span> <span class="kw">double</span> <span class="fn">Max</span>(<span class="kw">double</span> a, <span class="kw">double</span> b) =&gt; a &gt; b ? a : b;
+<span class="kw">static</span> <span class="kw">int</span> <span class="fn">Max</span>(<span class="kw">int</span> a, <span class="kw">int</span> b, <span class="kw">int</span> c) =&gt; <span class="fn">Max</span>(<span class="fn">Max</span>(a, b), c);</div>
+
+        <p style="margin-top:0.75rem;">Компилятор выбирает подходящую версию по аргументам. <strong>Правила:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Сигнатура</strong><span>= имя + типы параметров (порядок и количество); возвращаемый тип не входит в сигнатуру</span></li>
+            <li><strong>Только возврат</strong><span>нельзя перегрузить только по возвращаемому типу — ошибка компиляции</span></li>
+            <li><strong>Смысл</strong><span>перегрузки должны различаться смыслом, а не «на всякий случай»; иначе код трудно читать</span></li>
+        </ul>
+
+        <div class="quote-block">
+            Показать, что перегрузка — это то, чем мы уже пользуемся: <code>Console.WriteLine</code> имеет десятки перегрузок под разные типы. Хороший «ага-момент».
+        </div>
+    </div>
+
+    <!-- 9. ОБЛАСТЬ ВИДИМОСТИ -->
+    <div class="card">
+        <h2>9. Область видимости и время жизни</h2>
+        <ul class="feature-list">
+            <li><strong>Локальные</strong><span>параметры и локальные переменные существуют только внутри метода; снаружи недоступны</span></li>
+            <li><strong>Инициализация</strong><span>локальная переменная должна быть инициализирована до использования</span></li>
+            <li><strong>Вложенные блоки</strong><span><code>{}</code> создают вложенную область; переменная внешнего блока видна во внутреннем, но не наоборот</span></li>
+            <li><strong>Совпадение имён</strong><span>имя параметра может совпадать с именем переменной снаружи — это разные переменные (и повод для путаницы, лучше избегать)</span></li>
+        </ul>
+
+        <div class="quote-block">
+            <strong>Стек вызовов:</strong> каждый вызов метода создаёт свой «кадр» с параметрами и локальными; при возврате — уничтожается. Это объясняет, почему изменения локальных переменных не видны снаружи (раздел 4).
+        </div>
+    </div>
+
+    <!-- 10. РЕКУРСИЯ -->
+    <div class="card">
+        <h2>10. Рекурсия — кратко</h2>
+        <p><strong>Рекурсия</strong> — метод вызывает сам себя. Обязательны:</p>
+        <ul class="feature-list">
+            <li><strong>Базовый случай</strong><span>условие остановки</span></li>
+            <li><strong>Шаг</strong><span>приближение к базовому случаю</span></li>
+        </ul>
+
+        <div class="code-block" style="margin-top:1rem;"><span class="kw">static</span> <span class="kw">int</span> <span class="fn">Factorial</span>(<span class="kw">int</span> n)
+{
+    <span class="kw">if</span> (n &lt;= <span class="num">1</span>) <span class="kw">return</span> <span class="num">1</span>;      <span class="cmt">// базовый случай</span>
+    <span class="kw">return</span> n * <span class="fn">Factorial</span>(n - <span class="num">1</span>); <span class="cmt">// шаг</span>
+}</div>
+
+        <p style="margin-top:0.75rem;">Классические примеры: факториал, числа Фибоначчи, обход дерева, ханойские башни. <strong>Что проговорить:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Стек</strong><span>рекурсия элегантна, но каждый вызов — кадр стека; глубокая рекурсия → <code>StackOverflowException</code></span></li>
+            <li><strong>Цикл</strong><span>часто рекурсию можно заменить циклом (факториал — легко), и это эффективнее</span></li>
+            <li><strong>Базовый случай</strong><span>без базового случая — бесконечная рекурсия и падение</span></li>
+            <li><strong>Уровень</strong><span>на базовом уровне достаточно уметь прочитать рекурсивный метод и написать простой (факториал, сумма цифр, Фибоначчи)</span></li>
+        </ul>
+    </div>
+
+    <!-- 11. ПРАКТИЧЕСКИЕ ЗАДАНИЯ -->
+    <div class="card">
+        <h2>11. Практические задания</h2>
+        <div class="grid-2">
+            <div>
+                <ul class="feature-list">
+                    <li><strong>1</strong><span>Написать методы <code>Add</code>, <code>Subtract</code>, <code>Multiply</code>, <code>Divide</code> и вызвать их; в <code>Divide</code> обработать деление на ноль (вернуть <code>bool</code> + <code>out</code>-результат).</span></li>
+                    <li><strong>2</strong><span>Метод <code>IsEven(int)</code> и <code>IsPositive(int)</code>, использующие <code>return</code> булева выражения в одну строку.</span></li>
+                    <li><strong>3</strong><span>Метод <code>PrintArray(int[])</code> для печати массива — вынести повторяющийся вывод из предыдущих заданий.</span></li>
+                    <li><strong>4</strong><span>Метод <code>TryParsePositiveInt(string, out int)</code> — обёртка над <code>int.TryParse</code> с проверкой &gt; 0.</span></li>
+                </ul>
+            </div>
+            <div>
+                <ul class="feature-list">
+                    <li><strong>5</strong><span>Метод <code>Sum(params int[])</code> и вызов с разным числом аргументов.</span></li>
+                    <li><strong>6</strong><span>Перегрузки <code>Max(int,int)</code>, <code>Max(double,double)</code>, <code>Max(int,int,int)</code>; проверить, какая версия вызывается.</span></li>
+                    <li><strong>7</strong><span>Рекурсивный <code>Factorial</code> и рекурсивная <code>SumOfDigits(int)</code>; сравнить с итеративной версией.</span></li>
+                    <li><strong>8</strong><span>Разбить одну из задач темы 5 (например, «угадай число») на методы: <code>GenerateNumber</code>, <code>ReadGuess</code>, <code>CheckGuess</code>.</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 12. ТИПИЧНЫЕ ОШИБКИ -->
+    <div class="card">
+        <h2>12. Типичные ошибки и вопросы новичков</h2>
+        <ul class="feature-list">
+            <li><strong>Забытый return</strong><span>в методе с возвращаемым типом — ошибка компиляции «не все пути возвращают значение».</span></li>
+            <li><strong>return в void со значением</strong><span>ошибка.</span></li>
+            <li><strong>Без ref/out</strong><span>ожидание, что метод изменит аргумент без <code>ref</code>/<code>out</code> — частая логическая ошибка (раздел 4).</span></li>
+            <li><strong>out без присваивания</strong><span>до <code>return</code> — ошибка компиляции.</span></li>
+            <li><strong>ref с неинициализированной</strong><span>переменной — ошибка.</span></li>
+            <li><strong>Только по возврату</strong><span>перегрузка только по возвращаемому типу — не компилируется.</span></li>
+            <li><strong>Неоднозначность</strong><span>перегрузки (<code>Max(1, 2.0)</code>) — компилятор может не выбрать; упомянуть, что бывает.</span></li>
+            <li><strong>params не последним</strong><span>ошибка.</span></li>
+            <li><strong>Забыли static</strong><span>метод не виден из <code>Main</code> без объекта; на базовом уровне все методы — <code>static</code>.</span></li>
+            <li><strong>Рекурсия без базового</strong><span>случая → <code>StackOverflowException</code>.</span></li>
+            <li><strong>Слишком большой метод</strong><span>«делает всё»; сигнал к декомпозиции.</span></li>
+            <li><strong>Дублирование</strong><span>кода вместо вызова метода — теряется весь смысл методов.</span></li>
+        </ul>
+    </div>
+
+    <!-- 13. ИТОГИ -->
+    <div class="card">
+        <h2>13. Итоги и что дальше</h2>
+        <p><strong>Вывод:</strong> освоили объявление и вызов методов, <code>void</code> и возврат значения, передачу по значению и по ссылке (<code>ref</code>/<code>out</code>), <code>params</code>, необязательные и именованные аргументы, перегрузку, области видимости и базовую рекурсию. Главные навыки — декомпозиция задачи на методы и понимание, что происходит с аргументами при передаче.</p>
+
+        <div class="quote-block">
+            <strong>Следующая консультация</strong> — строки и форматирование (неизменяемость, методы string, StringBuilder, форматирование и культура).
+        </div>
+    </div>
+
+    <div class="footer">
+        Консультация 7 — Методы и параметры
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

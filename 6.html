@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="12.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Консультация 6 — Массивы и базовая работа с коллекциями</title>
+</head>
+<body>
+
+<!-- БОКОВАЯ ПАНЕЛЬ -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <h3>C#</h3>
+        <p>Коротко о главном</p>
+    </div>
+    <div class="sidebar-nav">
+        <div class="nav-group">
+            <div class="nav-group-title">Основное</div>
+            <div class="nav-item">
+                <a href="index.html">
+                    <span class="nav-icon">🏠</span>
+                    <span>Главная</span>
+                </a>
+            </div>
+        </div>
+        <div class="nav-group">
+            <div class="nav-group-title">Консультации</div>
+            <div class="nav-item">
+                <a href="1.html"><span class="nav-icon">1</span><span>Консультация 1</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="2.html"><span class="nav-icon">2</span><span>Консультация 2</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="3.html"><span class="nav-icon">3</span><span>Консультация 3</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="4.html"><span class="nav-icon">4</span><span>Консультация 4</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="5.html"><span class="nav-icon">5</span><span>Консультация 5</span></a>
+            </div>
+            <div class="nav-item active">
+                <a href="6.html"><span class="nav-icon">6</span><span>Консультация 6</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="7.html"><span class="nav-icon">7</span><span>Консультация 7</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="8.html"><span class="nav-icon">8</span><span>Консультация 8</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="9.html"><span class="nav-icon">9</span><span>Консультация 9</span></a>
+            </div>
+            <div class="nav-item">
+                <a href="10.html"><span class="nav-icon">10</span><span>Консультация 10</span></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">
+    ☰ Меню
+</div>
+
+<!-- ОСНОВНОЙ КОНТЕНТ -->
+<div class="main-content">
+
+    <div class="page-header">
+        <h1>Консультация 6. Массивы и базовая работа с коллекциями</h1>
+        <p class="subtitle">Массивы, многомерные и зубчатые массивы, методы Array, List&lt;T&gt; и Dictionary&lt;TKey,TValue&gt;</p>
+    </div>
+
+    <!-- ЦЕЛИ -->
+    <div class="card">
+        <h2>Цели консультации</h2>
+        <p>К концу занятия слушатель должен:</p>
+        <ul class="feature-list">
+            <li><strong>Понимать</strong><span>что такое массив, как он хранится в памяти и почему индексация с нуля</span></li>
+            <li><strong>Уметь</strong><span>создавать, инициализировать и перебирать одномерные и многомерные массивы</span></li>
+            <li><strong>Знать</strong><span>основные свойства и методы массивов (<code>Length</code>, <code>Rank</code>, <code>Array.Sort</code>, <code>Array.Reverse</code>, <code>Array.IndexOf</code>)</span></li>
+            <li><strong>Понимать</strong><span>ограничения массивов (фиксированный размер)</span></li>
+            <li><strong>Уметь</strong><span>пользоваться <code>List&lt;T&gt;</code> для динамических списков и <code>Dictionary&lt;TKey,TValue&gt;</code> для пар «ключ-значение»</span></li>
+            <li><strong>Выбирать</strong><span>осознанно между массивом, списком и словарём</span></li>
+        </ul>
+    </div>
+
+    <!-- 1. ЧТО ТАКОЕ МАССИВ -->
+    <div class="card">
+        <h2>1. Что такое массив</h2>
+        <p><strong>Массив</strong> — набор элементов одного типа, расположенных в памяти непрерывно и доступных по индексу. Это ссылочный тип (тема 2): переменная хранит ссылку на объект в куче.</p>
+
+        <p style="margin-top:0.75rem;"><strong>Ключевые свойства:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Фиксированная длина</strong><span>задаётся при создании и не меняется</span></li>
+            <li><strong>Индексация с нуля</strong><span>первый элемент <code>[0]</code>, последний <code>[Length - 1]</code></span></li>
+            <li><strong>Однородность</strong><span>все элементы одного типа</span></li>
+            <li><strong>Быстрый доступ</strong><span>по индексу — O(1), потому что адрес вычисляется арифметически</span></li>
+        </ul>
+
+        <div class="quote-block">
+            <strong>Почему с нуля — коротко:</strong> индекс — это смещение от начала, первый элемент на нулевом смещении. Не углубляться, но проговорить, чтобы не было «магии».
+        </div>
+    </div>
+
+    <!-- 2. СОЗДАНИЕ И ИНИЦИАЛИЗАЦИЯ -->
+    <div class="card">
+        <h2>2. Создание и инициализация</h2>
+        <p>Способы:</p>
+        <div class="code-block"><span class="kw">int</span>[] a = <span class="kw">new</span> <span class="kw">int</span>[<span class="num">5</span>];              <span class="cmt">// 5 элементов, все 0</span>
+<span class="kw">int</span>[] b = <span class="kw">new</span> <span class="kw">int</span>[] { <span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span> };  <span class="cmt">// явная инициализация</span>
+<span class="kw">int</span>[] c = { <span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span> };         <span class="cmt">// краткая форма</span>
+<span class="kw">string</span>[] names = <span class="kw">new</span> <span class="kw">string</span>[<span class="num">3</span>];   <span class="cmt">// все элементы null</span>
+<span class="kw">var</span> d = <span class="kw">new</span>[] { <span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span> };        <span class="cmt">// вывод типа → int[]</span></div>
+
+        <div class="quote-block">
+            <strong>Важно:</strong> при <code>new int[5]</code> элементы получают значение по умолчанию типа (0 для чисел, <code>false</code> для <code>bool</code>, <code>null</code> для ссылочных). Это отличается от локальных переменных, которые обязаны быть инициализированы.
+        </div>
+
+        <p style="margin-top:0.75rem;">Длина — свойство <code>Length</code>:</p>
+        <div class="code-block"><span class="type">Console</span>.<span class="fn">WriteLine</span>(c.Length);      <span class="cmt">// 3</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(c[^<span class="num">1</span>]);         <span class="cmt">// 30 — индекс с конца (C# 8+)</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(c[^<span class="num">2</span>]);         <span class="cmt">// 20</span></div>
+        <p style="margin-top:0.75rem;"><code>^1</code> — «последний», <code>^2</code> — «предпоследний». Удобно, стоит показать.</p>
+    </div>
+
+    <!-- 3. ДОСТУП И ИЗМЕНЕНИЕ -->
+    <div class="card">
+        <h2>3. Доступ и изменение элементов</h2>
+        <div class="code-block"><span class="kw">int</span>[] numbers = { <span class="num">5</span>, <span class="num">10</span>, <span class="num">15</span> };
+numbers[<span class="num">0</span>] = <span class="num">100</span>;                 <span class="cmt">// изменение</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(numbers[<span class="num">0</span>]);    <span class="cmt">// 100</span></div>
+
+        <div class="quote-block" style="margin-top:1rem;">
+            <strong>Главная ловушка — выход за границы:</strong>
+        </div>
+        <div class="code-block"><span class="type">Console</span>.<span class="fn">WriteLine</span>(numbers[<span class="num">3</span>]);    <span class="cmt">// IndexOutOfRangeException</span></div>
+        <p style="margin-top:0.75rem;">Это исключение времени выполнения, компилятор его не поймает. Правило: последний допустимый индекс — <code>Length - 1</code>. Связываем с темой 5 («на единицу» в цикле <code>for</code>).</p>
+    </div>
+
+    <!-- 4. ПЕРЕБОР МАССИВА -->
+    <div class="card">
+        <h2>4. Перебор массива</h2>
+        <p><strong>Через for</strong> — когда нужен индекс:</p>
+        <div class="code-block"><span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; numbers.Length; i++)
+{
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>($<span class="str">"[{i}] = {numbers[i]}"</span>);
+}</div>
+
+        <p style="margin-top:0.75rem;"><strong>Через foreach</strong> — когда нужны просто значения:</p>
+        <div class="code-block"><span class="kw">foreach</span> (<span class="kw">int</span> n <span class="kw">in</span> numbers)
+{
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(n);
+}</div>
+
+        <div class="quote-block">
+            Напоминаем из темы 5: <code>foreach</code> не даёт менять элементы (переменная — копия), для изменения — только <code>for</code> по индексу. И нельзя менять длину массива — её и нет.
+        </div>
+    </div>
+
+    <!-- 5. МНОГОМЕРНЫЕ МАССИВЫ -->
+    <div class="card">
+        <h2>5. Многомерные массивы</h2>
+        <p><strong>Двумерный прямоугольный массив</strong> — таблица:</p>
+        <div class="code-block"><span class="kw">int</span>[,] matrix = <span class="kw">new</span> <span class="kw">int</span>[<span class="num">3</span>, <span class="num">4</span>];         <span class="cmt">// 3 строки, 4 столбца</span>
+matrix[<span class="num">0</span>, <span class="num">0</span>] = <span class="num">1</span>;
+matrix[<span class="num">2</span>, <span class="num">3</span>] = <span class="num">9</span>;
+
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(matrix.<span class="fn">GetLength</span>(<span class="num">0</span>)); <span class="cmt">// 3 — строки</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(matrix.<span class="fn">GetLength</span>(<span class="num">1</span>)); <span class="cmt">// 4 — столбцы</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(matrix.Length);       <span class="cmt">// 12 — всего элементов</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(matrix.Rank);         <span class="cmt">// 2 — размерность</span></div>
+
+        <p style="margin-top:0.75rem;"><strong>Перебор — вложенные циклы:</strong></p>
+        <div class="code-block"><span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; matrix.<span class="fn">GetLength</span>(<span class="num">0</span>); i++)
+{
+    <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">0</span>; j &lt; matrix.<span class="fn">GetLength</span>(<span class="num">1</span>); j++)
+    {
+        <span class="type">Console</span>.<span class="fn">Write</span>($<span class="str">"{matrix[i, j],4}"</span>);
+    }
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>();
+}</div>
+
+        <div class="quote-block">
+            <strong>Важно:</strong> для многомерного массива <code>Length</code> — общее число элементов, а не длина «строки». Длины измерений — через <code>GetLength(измерение)</code>. Это частая ошибка.
+        </div>
+
+        <p style="margin-top:0.75rem;"><strong>Инициализация:</strong></p>
+        <div class="code-block"><span class="kw">int</span>[,] grid = {
+    { <span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span> },
+    { <span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span> }
+};</div>
+
+        <p style="margin-top:0.75rem;"><strong>Зубчатый массив (jagged)</strong> — массив массивов, строки могут быть разной длины:</p>
+        <div class="code-block"><span class="kw">int</span>[][] jagged = <span class="kw">new</span> <span class="kw">int</span>[<span class="num">3</span>][];
+jagged[<span class="num">0</span>] = <span class="kw">new</span> <span class="kw">int</span>[] { <span class="num">1</span>, <span class="num">2</span> };
+jagged[<span class="num">1</span>] = <span class="kw">new</span> <span class="kw">int</span>[] { <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span> };
+jagged[<span class="num">2</span>] = <span class="kw">new</span> <span class="kw">int</span>[] { <span class="num">6</span> };
+
+<span class="kw">foreach</span> (<span class="kw">var</span> row <span class="kw">in</span> jagged)
+{
+    <span class="kw">foreach</span> (<span class="kw">int</span> x <span class="kw">in</span> row) <span class="type">Console</span>.<span class="fn">Write</span>($<span class="str">"{x} "</span>);
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>();
+}</div>
+
+        <div class="quote-block">
+            <strong>Разница, которую стоит проговорить:</strong> <code>int[,]</code> — прямоугольник, <code>int[][]</code> — «массив строк разной длины». Для таблиц — <code>[,]</code>, для «списка списков» — <code>[][]</code>.
+        </div>
+    </div>
+
+    <!-- 6. МЕТОДЫ ARRAY -->
+    <div class="card">
+        <h2>6. Полезные методы класса Array</h2>
+        <div class="code-block"><span class="kw">int</span>[] data = { <span class="num">3</span>, <span class="num">1</span>, <span class="num">4</span>, <span class="num">1</span>, <span class="num">5</span>, <span class="num">9</span>, <span class="num">2</span> };
+
+<span class="type">Array</span>.<span class="fn">Sort</span>(data);              <span class="cmt">// сортировка по возрастанию: 1,1,2,3,4,5,9</span>
+<span class="type">Array</span>.<span class="fn">Reverse</span>(data);           <span class="cmt">// разворот: 9,5,4,3,2,1,1</span>
+<span class="kw">int</span> idx = <span class="type">Array</span>.<span class="fn">IndexOf</span>(data, <span class="num">4</span>); <span class="cmt">// индекс первого вхождения 4 (или -1)</span>
+<span class="type">Array</span>.<span class="fn">Clear</span>(data, <span class="num">0</span>, data.Length); <span class="cmt">// обнулить все элементы</span>
+<span class="kw">int</span>[] copy = (<span class="kw">int</span>[])data.<span class="fn">Clone</span>();  <span class="cmt">// поверхностная копия</span></div>
+
+        <div class="quote-block">
+            Подчеркнуть: <code>Sort</code> и <code>Reverse</code> меняют исходный массив (не возвращают новый). Это важно, чтобы не удивляться.
+        </div>
+        <p style="margin-top:0.75rem;">Также: <code>Array.Copy</code>, <code>Array.Resize</code> (создаёт новый массив — имя обманчиво), <code>Array.Exists</code>, <code>Array.Find</code>. На базовом уровне — обзорно, чтобы знали, что есть.</p>
+    </div>
+
+    <!-- 7. ОГРАНИЧЕНИЯ МАССИВОВ -->
+    <div class="card">
+        <h2>7. Ограничения массивов</h2>
+        <p>Массивы хороши для фиксированных наборов, но:</p>
+        <ul class="feature-list">
+            <li><strong>Размер</strong><span>нельзя изменить — только создать новый и скопировать</span></li>
+            <li><strong>Вставка/удаление</strong><span>в середину — дорого (сдвиг элементов)</span></li>
+            <li><strong>Поиск</strong><span>линейный (если не отсортирован)</span></li>
+        </ul>
+        <p style="margin-top:0.75rem;">Когда этих ограничений достаточно — массив идеален (быстрый, компактный). Когда нужно добавлять/удалять — берём <code>List&lt;T&gt;</code>.</p>
+    </div>
+
+    <!-- 8. LIST<T> -->
+    <div class="card">
+        <h2>8. List&lt;T&gt; — динамический список</h2>
+        <p><code>List&lt;T&gt;</code> — обобщённая коллекция из <code>System.Collections.Generic</code>, которая сама растёт при добавлении:</p>
+        <div class="code-block"><span class="kw">using</span> <span class="type">System.Collections.Generic</span>;
+
+<span class="kw">var</span> list = <span class="kw">new</span> <span class="type">List</span>&lt;<span class="kw">int</span>&gt; { <span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span> };
+list.<span class="fn">Add</span>(<span class="num">40</span>);              <span class="cmt">// добавить в конец</span>
+list.<span class="fn">AddRange</span>(<span class="kw">new</span>[] { <span class="num">50</span>, <span class="num">60</span> });
+list.<span class="fn">Insert</span>(<span class="num">0</span>, <span class="num">5</span>);         <span class="cmt">// вставить в начало</span>
+list.<span class="fn">Remove</span>(<span class="num">20</span>);           <span class="cmt">// удалить первое вхождение</span>
+list.<span class="fn">RemoveAt</span>(<span class="num">0</span>);          <span class="cmt">// удалить по индексу</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(list.Count); <span class="cmt">// количество (не Length!)</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(list[<span class="num">0</span>]);    <span class="cmt">// доступ по индексу</span></div>
+
+        <p style="margin-top:0.75rem;"><strong>Ключевые отличия от массива:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Count</strong><span>а не <code>Length</code></span></li>
+            <li><strong>Размер</strong><span>меняется автоматически</span></li>
+            <li><strong>Методы</strong><span><code>Add</code>/<code>Remove</code>/<code>Insert</code>/<code>Contains</code>/<code>IndexOf</code> — удобные методы</span></li>
+            <li><strong>Перебор</strong><span><code>for</code> и <code>foreach</code> так же</span></li>
+            <li><strong>Внутри</strong><span>тот же массив, который пересоздаётся при росте (поэтому <code>Capacity</code> — полезно знать, но не обязательно)</span></li>
+        </ul>
+
+        <div class="quote-block">
+            <strong>Практически:</strong> в большинстве прикладных задач <code>List&lt;T&gt;</code> удобнее массива. Массив — когда размер известен заранее и важна производительность/компактность.
+        </div>
+    </div>
+
+    <!-- 9. DICTIONARY -->
+    <div class="card">
+        <h2>9. Dictionary&lt;TKey, TValue&gt; — словарь</h2>
+        <p>Коллекция пар «ключ → значение» с быстрым поиском по ключу (O(1) в среднем):</p>
+        <div class="code-block"><span class="kw">var</span> ages = <span class="kw">new</span> <span class="type">Dictionary</span>&lt;<span class="kw">string</span>, <span class="kw">int</span>&gt;
+{
+    [<span class="str">"Анна"</span>] = <span class="num">25</span>,
+    [<span class="str">"Иван"</span>] = <span class="num">30</span>
+};
+
+ages[<span class="str">"Ольга"</span>] = <span class="num">28</span>;                    <span class="cmt">// добавление</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(ages[<span class="str">"Анна"</span>]);       <span class="cmt">// 25</span>
+<span class="type">Console</span>.<span class="fn">WriteLine</span>(ages.<span class="fn">ContainsKey</span>(<span class="str">"Иван"</span>)); <span class="cmt">// true</span>
+
+<span class="kw">if</span> (ages.<span class="fn">TryGetValue</span>(<span class="str">"Пётр"</span>, <span class="kw">out</span> <span class="kw">int</span> age))
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(age);
+<span class="kw">else</span>
+    <span class="type">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Нет такого ключа"</span>);</div>
+
+        <p style="margin-top:0.75rem;"><strong>Важные моменты:</strong></p>
+        <ul class="feature-list">
+            <li><strong>Ключи</strong><span>уникальны — повторное <code>ages["Анна"] = 26</code> перезапишет значение, а <code>Add</code> с существующим ключом бросит исключение</span></li>
+            <li><strong>[] для отсутствующего</strong><span>ключ — исключение <code>KeyNotFoundException</code>, поэтому <code>TryGetValue</code> предпочтителен</span></li>
+            <li><strong>Перебор</strong><span><code>foreach (var pair in ages)</code> с <code>pair.Key</code>/<code>pair.Value</code>; порядок не гарантирован</span></li>
+            <li><strong>Методы</strong><span><code>Remove</code>, <code>Count</code>, <code>Keys</code>, <code>Values</code> — по аналогии</span></li>
+        </ul>
+
+        <div class="quote-block">
+            <strong>Когда использовать:</strong> подсчёты, справочники, «сопоставление id → объект», кэши.
+        </div>
+    </div>
+
+    <!-- 10. КАК ВЫБРАТЬ КОЛЛЕКЦИЮ -->
+    <div class="card">
+        <h2>10. Как выбрать коллекцию</h2>
+        <p>Короткое правило:</p>
+        <ul class="feature-list">
+            <li><strong>Массив T[]</strong><span>фиксированный набор, важен индекс, размер известен</span></li>
+            <li><strong>List&lt;T&gt;</strong><span>нужно добавлять/удалять, размер заранее неизвестен</span></li>
+            <li><strong>Dictionary&lt;TKey,TValue&gt;</strong><span>нужен быстрый поиск по ключу</span></li>
+            <li><strong>T[,]</strong><span>таблица</span></li>
+            <li><strong>T[][]</strong><span>строки разной длины</span></li>
+        </ul>
+        <div class="quote-block">
+            Проговорить, что на старте достаточно <code>List&lt;T&gt;</code> и <code>Dictionary&lt;TKey,TValue&gt;</code> — этого хватает для 90% задач; остальные коллекции (<code>HashSet</code>, <code>Queue</code>, <code>Stack</code>, <code>LinkedList</code>) — позже.
+        </div>
+    </div>
+
+    <!-- 11. ПРАКТИЧЕСКИЕ ЗАДАНИЯ -->
+    <div class="card">
+        <h2>11. Практические задания</h2>
+        <div class="grid-2">
+            <div>
+                <ul class="feature-list">
+                    <li><strong>1</strong><span>Создать массив из 10 случайных чисел, вывести его, найти сумму, минимум и максимум.</span></li>
+                    <li><strong>2</strong><span>Найти среднее арифметическое элементов массива (с дробным результатом — связать с темой 2).</span></li>
+                    <li><strong>3</strong><span>Перевернуть массив (сначала через <code>Array.Reverse</code>, затем вручную через два индекса).</span></li>
+                    <li><strong>4</strong><span>Найти в массиве все элементы, кратные 3, и вывести их индексы.</span></li>
+                </ul>
+            </div>
+            <div>
+                <ul class="feature-list">
+                    <li><strong>5</strong><span>Заполнить двумерный массив 5×5 таблицей умножения и вывести с выравниванием.</span></li>
+                    <li><strong>6</strong><span>Найти сумму элементов главной диагонали квадратной матрицы.</span></li>
+                    <li><strong>7</strong><span>Считать с клавиатуры N чисел в <code>List&lt;int&gt;</code>, вывести их в обратном порядке.</span></li>
+                    <li><strong>8</strong><span>Подсчитать частоту слов в строке (разбить через <code>Split</code>, сложить в <code>Dictionary&lt;string, int&gt;</code>); вывести пары.</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 12. ТИПИЧНЫЕ ОШИБКИ -->
+    <div class="card">
+        <h2>12. Типичные ошибки и вопросы новичков</h2>
+        <ul class="feature-list">
+            <li><strong>IndexOutOfRangeException</strong><span><code>i &lt;= Length</code> вместо <code>i &lt; Length</code>.</span></li>
+            <li><strong>Length vs Count</strong><span>массив → <code>Length</code>, <code>List&lt;T&gt;</code> → <code>Count</code>.</span></li>
+            <li><strong>Многомерный массив</strong><span><code>Length</code> даёт общее число, а не длину строки; нужен <code>GetLength(i)</code>.</span></li>
+            <li><strong>Array.Resize</strong><span>«не ресайзит» — создаёт новый массив; старая ссылка, если была, остаётся на старый.</span></li>
+            <li><strong>Sort/Reverse</strong><span>меняют исходный массив — ожидание «вернёт новый» неверно.</span></li>
+            <li><strong>ages["нет_ключа"]</strong><span>исключение; нужен <code>TryGetValue</code>/<code>ContainsKey</code>.</span></li>
+            <li><strong>Изменение списка</strong><span>в <code>foreach</code> — исключение; для удаления — <code>for</code> с конца или <code>RemoveAll</code>.</span></li>
+            <li><strong>List&lt;T&gt; vs T[]</strong><span>путаница <code>Length</code>/<code>Count</code>, а также неявное ожидание, что массив «сам вырастет».</span></li>
+            <li><strong>null-элементы</strong><span>в массиве строк — обращение к <code>.Length</code> у <code>null</code> даёт <code>NullReferenceException</code>; проверять.</span></li>
+            <li><strong>Копирование через =</strong><span>копируется ссылка, а не массив (тема 2); для копии — <code>Clone</code>/<code>Array.Copy</code>/<code>ToList()</code>.</span></li>
+            <li><strong>Порядок в Dictionary</strong><span>не гарантирован; не полагаться на него.</span></li>
+        </ul>
+    </div>
+
+    <!-- 13. ИТОГИ -->
+    <div class="card">
+        <h2>13. Итоги и что дальше</h2>
+        <p><strong>Вывод:</strong> освоили массивы (одномерные, многомерные, зубчатые), их свойства и методы, ограничения; научились пользоваться <code>List&lt;T&gt;</code> для динамических списков и <code>Dictionary&lt;TKey,TValue&gt;</code> для поиска по ключу; разобрались, как выбирать коллекцию под задачу.</p>
+
+        <div class="quote-block">
+            <strong>Следующая консультация</strong> — методы
